@@ -1,0 +1,81 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package organization;
+
+/**
+ *
+ * @author syahm
+ * 18/6/2026 
+ */
+public class organization {
+    private String orgName;
+    private int registrationNum;
+    private String orgEmail;
+    private int contactPerson;
+    private String orgAddress;
+    private String orgType;
+    private String orgPassword;
+
+    public organization(){
+        
+    }
+    
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public int getRegistrationNum() {
+        return registrationNum;
+    }
+
+    public void setRegistrationNum(int registrationNum) {
+        this.registrationNum = registrationNum;
+    }
+
+    public String getOrgEmail() {
+        return orgEmail;
+    }
+
+    public void setOrgEmail(String orgEmail) {
+        this.orgEmail = orgEmail;
+    }
+
+    public int getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(int contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public String getOrgAddress() {
+        return orgAddress;
+    }
+
+    public void setOrgAddress(String orgAddress) {
+        this.orgAddress = orgAddress;
+    }
+
+    public String getOrgType() {
+        return orgType;
+    }
+
+    public void setOrgType(String orgType) {
+        this.orgType = orgType;
+    }
+
+    public String getOrgPassword() {
+        return orgPassword;
+    }
+
+    public void setOrgPassword(String orgPassword) {
+        this.orgPassword = orgPassword;
+    }
+    
+}
