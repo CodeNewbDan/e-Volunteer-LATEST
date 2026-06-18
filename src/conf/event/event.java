@@ -6,7 +6,8 @@ package event;
 
 /**
  *
- * @author syahm
+ * @author syahmi
+ * 18/6/2026 
  */
 public class event {
     private String eventName;
@@ -17,6 +18,20 @@ public class event {
     private String taskDesc;
     private double eventHour;
     private String secretCode;
+
+    public event() {
+    }
+
+    public event(String eventName, String eventDate, String location, String status, int numOfVolunteer, String taskDesc, double eventHour, String secretCode) {
+        this.eventName = eventName;
+        this.eventDate = eventDate;
+        this.location = location;
+        this.status = status;
+        this.numOfVolunteer = numOfVolunteer;
+        this.taskDesc = taskDesc;
+        this.eventHour = eventHour;
+        this.secretCode = secretCode;
+    }
 
     public String getEventName() {
         return eventName;

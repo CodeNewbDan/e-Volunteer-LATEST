@@ -6,10 +6,11 @@ package organization;
 
 /**
  *
- * @author syahm
+ * @author syahmi
  * 18/6/2026 
  */
 public class organization {
+    private int orgId;
     private String orgName;
     private int registrationNum;
     private String orgEmail;
@@ -21,7 +22,26 @@ public class organization {
     public organization(){
         
     }
-    
+
+    public organization(int orgId, String orgName, int registrationNum, String orgEmail, int contactPerson, String orgAddress, String orgType, String orgPassword) {
+        this.orgId = orgId;
+        this.orgName = orgName;
+        this.registrationNum = registrationNum;
+        this.orgEmail = orgEmail;
+        this.contactPerson = contactPerson;
+        this.orgAddress = orgAddress;
+        this.orgType = orgType;
+        this.orgPassword = orgPassword;
+    }
+
+    public int getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(int orgId) {
+        this.orgId = orgId;
+    }
+   
     public String getOrgName() {
         return orgName;
     }
