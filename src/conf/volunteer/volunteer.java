@@ -6,7 +6,7 @@ package volunteer;
 
 /**
  *
- * @author syahm
+ * @author syahmi
  * 18/6/2026 
  */
 public class volunteer  {
@@ -21,6 +21,17 @@ public class volunteer  {
     
     public volunteer(){
         
+    }
+
+    public volunteer(int studentId, String fullName, String volunteerEmail, int phoneNum, String volunteerAddress, String volunteerPassword, String course, double totalHours) {
+        this.studentId = studentId;
+        this.fullName = fullName;
+        this.volunteerEmail = volunteerEmail;
+        this.phoneNum = phoneNum;
+        this.volunteerAddress = volunteerAddress;
+        this.volunteerPassword = volunteerPassword;
+        this.course = course;
+        this.totalHours = totalHours;
     }
 
     public int getStudentId() {
