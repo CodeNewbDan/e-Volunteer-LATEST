@@ -10,6 +10,8 @@ package com.model;
  * 18/6/2026 
  */
 public class event {
+    private int eventId;
+    private int orgId;
     private String eventName;
     private String eventDate;
     private String location;
@@ -22,7 +24,9 @@ public class event {
     public event() {
     }
 
-    public event(String eventName, String eventDate, String location, String status, int numOfVolunteer, String taskDesc, double eventHour, String secretCode) {
+    public event(int eventId, int orgId, String eventName, String eventDate, String location, String status, int numOfVolunteer, String taskDesc, double eventHour, String secretCode) {
+        this.eventId = eventId;
+        this.orgId = orgId;
         this.eventName = eventName;
         this.eventDate = eventDate;
         this.location = location;
@@ -32,6 +36,26 @@ public class event {
         this.eventHour = eventHour;
         this.secretCode = secretCode;
     }
+
+   
+
+    public int getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
+    }
+
+    
+    public int getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(int orgId) {
+        this.orgId = orgId;
+    }
+    
 
     public String getEventName() {
         return eventName;

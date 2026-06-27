@@ -11,6 +11,11 @@ import com.model.event;
  *
  * @author hansz
  */
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import com.model.*;
+
 public class EventDAO {
 
     private static final String URL = "jdbc:derby://localhost:1527/eVolunteer/VOLUNTEER";
