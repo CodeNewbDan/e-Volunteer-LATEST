@@ -21,8 +21,13 @@ public class VolunteerDAO {
 
     public VolunteerDAO() {}
     
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("org.apache.derby.jdbc.ClientDriver");
+    protected Connection getConnection() throws SQLException {
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return DriverManager.getConnection(URL, USER, PASS);
     }
 
     public boolean registerVolunteer(volunteer v) {
