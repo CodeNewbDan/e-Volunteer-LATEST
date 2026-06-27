@@ -14,7 +14,7 @@ import com.model.*;
 
 public class EventDAO {
 
-    private static final String URL = "jdbc:derby://localhost:1527/eVolunteer/VOLUNTEER";
+    private static final String URL = "jdbc:derby://localhost:1527/eVolunteer";
     private static final String USER = "app";
     private static final String PASS = "app";
 

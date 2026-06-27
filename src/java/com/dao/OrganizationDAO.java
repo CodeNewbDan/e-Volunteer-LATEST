@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import com.model.*;
 
 public class OrganizationDAO {
-    private static final String URL = "jdbc:derby://localhost:1527/eVolunteer/VOLUNTEER";
+    private static final String URL = "jdbc:derby://localhost:1527/eVolunteer";
     private static final String USER = "app";
     private static final String PASS = "app";
 
@@ -24,7 +24,7 @@ public class OrganizationDAO {
     
     
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:derby:volunteerDB;create=true");
+        return DriverManager.getConnection("org.apache.derby.jdbc.ClientDriver");
     }
 
     public boolean registerOrg(organization org) {
