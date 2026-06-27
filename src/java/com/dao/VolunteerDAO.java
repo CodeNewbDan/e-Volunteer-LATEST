@@ -7,12 +7,116 @@
  *
  * @author hansz
  */
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import com.model.*;
+
 public class VolunteerDAO {
     private static final String URL = "jdbc:derby://localhost:1527/eVolunteer/VOLUNTEER";
     private static final String USER = "app";
     private static final String PASS = "app";
 
-    public VolunteerDAO() {
+    public VolunteerDAO() {}
+    
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:derby:volunteerDB;create=true");
+    }
 
+    public boolean registerVolunteer(volunteer v) {
+        // Included all schema fields to support full registration details
+        String sql = "INSERT INTO Volunteer (StudentID, FullName, Volunteer_Email, PhoneNumber, Address, Password, Course, TotalHours) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, v.getStudentId());
+            ps.setString(2, v.getFullName());
+            ps.setString(3, v.getVolunteerEmail());
+            ps.setInt(4, v.getPhoneNum());
+            ps.setString(5, v.getVolunteerAddress());
+            ps.setString(6, v.getVolunteerPassword());
+            ps.setString(7, v.getCourse());
+            ps.setDouble(8, v.getTotalHours());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public volunteer loginVolunteer(String email, String pwd) {
+        String sql = "SELECT * FROM Volunteer WHERE Volunteer_Email = ? AND Password = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, pwd);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapVolunteer(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public volunteer getVolunteerById(int id) {
+        String sql = "SELECT * FROM Volunteer WHERE VolunteerID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapVolunteer(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateVolunteerProfile(volunteer v) {
+        String sql = "UPDATE Volunteer SET StudentID = ?, FullName = ?, Volunteer_Email = ?, PhoneNumber = ?, Address = ?, Password = ?, Course = ? WHERE VolunteerID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, v.getStudentId());
+            ps.setString(2, v.getFullName());
+            ps.setString(3, v.getVolunteerEmail());
+            ps.setInt(4, v.getPhoneNum());
+            ps.setString(5, v.getVolunteerAddress());
+            ps.setString(6, v.getVolunteerPassword());
+            ps.setString(7, v.getCourse());
+            ps.setInt(8, v.getVolunteerId());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Used to modify cached hours
+     */
+    public boolean updateVolunteerHours(int id, double newHours) {
+        String sql = "UPDATE Volunteer SET TotalHours = ? WHERE VolunteerID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, newHours);
+            ps.setInt(2, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private volunteer mapVolunteer(ResultSet rs) throws SQLException {
+        volunteer v = new volunteer();
+        v.setVolunteerId(rs.getInt("VolunteerID"));
+        v.setStudentId(rs.getInt("StudentID"));
+        v.setFullName(rs.getString("FullName"));
+        v.setVolunteerEmail(rs.getString("Volunteer_Email"));
+        v.setPhoneNum(rs.getInt("PhoneNumber"));
+        v.setVolunteerAddress(rs.getString("Address"));
+        v.setVolunteerPassword(rs.getString("Password"));
+        v.setCourse(rs.getString("Course"));
+        v.setTotalHours(rs.getDouble("TotalHours"));
+        return v;
     }
 }

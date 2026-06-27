@@ -18,6 +18,7 @@ public class volunteer  {
     private String volunteerPassword;
     private String course;
     private double totalHours;
+    private int volunteerId;
     
     public volunteer(){
         
@@ -98,6 +99,13 @@ public class volunteer  {
         this.totalHours = totalHours;
     }
 
-    
+    public int getVolunteerId() {
+        return volunteerId;
+    }
+
+    public void setVolunteerId(int volunteerId) {
+        this.volunteerId = volunteerId;
+    }
+
     
 }
