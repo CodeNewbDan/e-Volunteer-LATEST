@@ -4,18 +4,6 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/index.html</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/RegisterVolunteerServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/RegisterOrgServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/VolunteerLoginServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/OrgLoginServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/UpdateVolunteerProfileServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/UpdateOrgProfileServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/LogoutServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/CreateEventServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/UpdateEventServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/DeleteEventServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/RegisterEventServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/com/servlet/VerifyAttendanceServlet.java</file>
         </group>
     </open-files>
 </project-private>
