@@ -2,14 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.servlet;
+package servlet;
 
+import dao.VolunteerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.volunteer;
+import dao.VolunteerDAO;
 
 /**
  *
@@ -69,7 +72,49 @@ public class RegisterVolunteerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        request.setCharacterEncoding("UTF-8");
+
+        try {
+            // 1. Retrieve and parse parameter types exactly as declared in volunteer.java (int for studentId and phoneNum)
+            int studentId = Integer.parseInt(request.getParameter("studentId"));
+            String fullName = request.getParameter("fullName");
+            String email = request.getParameter("email");
+            int phoneNum = Integer.parseInt(request.getParameter("phoneNum"));
+            String address = request.getParameter("address");
+            String password = request.getParameter("password");
+            String course = request.getParameter("course");
+
+            // 2. Instantiate and bind to the lowercase 'volunteer' model
+            volunteer v = new volunteer();
+            v.setStudentId(studentId);
+            v.setFullName(fullName);
+            v.setVolunteerEmail(email);
+            v.setPhoneNum(phoneNum);
+            v.setVolunteerAddress(address);
+            v.setVolunteerPassword(password);
+            v.setCourse(course);
+            v.setTotalHours(0.00); // Initializes starting hours to 0.00
+            
+            // 3. Process database insert via synchronized DAO
+            VolunteerDAO dao = new VolunteerDAO();
+            boolean success = dao.registerVolunteer(v);
+
+            if (success) {
+                response.sendRedirect("v-login.html?status=registered");
+            } else {
+                response.sendRedirect("v-register.html?error=failed");
+            }
+            
+        } catch (NumberFormatException e) {
+            // Catches any invalid numerical inputs for StudentID or Phone Number
+            e.printStackTrace();
+            response.sendRedirect("v-register.html?error=invalid_number_format");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("v-register.html?error=system_error");
+        }
+
     }
 
     /**
