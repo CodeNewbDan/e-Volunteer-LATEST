@@ -10,12 +10,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+
 
 /**
  *
  * @author Asus
  */
 public class LogoutServlet extends HttpServlet {
+     private static final long serialVersionUID = 1L;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,7 +59,23 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        // 1. Retrieve the session context without establishing a brand new one
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            // 2. Explicitly unbind all custom model and security variables from JVM memory
+            session.removeAttribute("currentVolunteer");
+            session.removeAttribute("currentOrg");
+            session.removeAttribute("userRole");
+
+            // 3. Invalidate and completely destroy the session lifecycle
+            session.invalidate();
+        }
+        // 4. Safely redirect the user to the public landing page
+        response.sendRedirect("index.html?status=logged_out");
+            
+        
     }
 
     /**
@@ -69,7 +89,7 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

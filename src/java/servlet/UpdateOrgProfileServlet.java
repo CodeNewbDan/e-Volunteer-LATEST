@@ -10,6 +10,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.organization;
+import dao.OrganizationDAO;
 
 /**
  *
@@ -69,7 +72,67 @@ public class UpdateOrgProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        // 1. Force UTF-8 encoding standard
+        request.setCharacterEncoding("UTF-8");
+
+        // 2. Validate session and retrieve authenticated organization context
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("currentOrg") == null) {
+            response.sendRedirect("org-login.html?error=session_expired");
+            return;
+        }
+
+        organization currentOrg = (organization) session.getAttribute("currentOrg");
+
+        try {
+            // 3. Extract form parameters
+            String orgName = request.getParameter("orgName");
+            String orgEmail = request.getParameter("orgEmail");
+
+            // contactPerson is defined as 'int' in your organization.java model
+            int contactPerson = Integer.parseInt(request.getParameter("contactPerson"));
+
+            String orgAddress = request.getParameter("orgAddress");
+            String orgType = request.getParameter("orgType");
+            String orgPassword = request.getParameter("password"); // Maps the form password field
+
+            // 4. Construct updated organization entity
+            organization updated = new organization();
+
+            // SECURITY check: Maintain read-only keys from authenticated session
+            updated.setOrgId(currentOrg.getOrgId());                  // Retains immutable primary key
+            updated.setRegistrationNum(currentOrg.getRegistrationNum()); // Retains immutable registration number
+
+            // Apply new profile modifications
+            updated.setOrgName(orgName);
+            updated.setOrgEmail(orgEmail);
+            updated.setContactPerson(contactPerson);
+            updated.setOrgAddress(orgAddress);
+            updated.setOrgType(orgType);
+            updated.setOrgPassword(orgPassword);
+
+            // 5. Delegate profile persistence to your OrganizationDAO
+            OrganizationDAO dao = new OrganizationDAO();
+            boolean success = dao.updateOrgProfile(updated);
+
+            if (success) {
+                // Instantly sync the active session to display updated credentials in JSP pages
+                session.setAttribute("currentOrg", updated);
+                response.sendRedirect("org-profile.jsp?status=success");
+            } else {
+                response.sendRedirect("org-profile.jsp?error=database_error");
+            }
+
+        } catch (NumberFormatException e) {
+            // Catches invalid numeric values passed into contactPerson
+            e.printStackTrace();
+            response.sendRedirect("org-profile.jsp?error=invalid_contact_person_format");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("org-profile.jsp?error=system_error");
+        }
+        
     }
 
     /**
