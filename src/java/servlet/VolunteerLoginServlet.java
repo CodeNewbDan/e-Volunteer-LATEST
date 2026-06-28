@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.servlet;
+package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,12 +10,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.volunteer;
+import dao.VolunteerDAO;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author Asus
  */
-public class OrgLoginServlet extends HttpServlet {
+public class VolunteerLoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,10 +37,10 @@ public class OrgLoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrgLoginServlet</title>");
+            out.println("<title>Servlet VolunteerLoginServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrgLoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet VolunteerLoginServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,7 +72,45 @@ public class OrgLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       
+        // 1. Force UTF-8 encoding standard
+        request.setCharacterEncoding("UTF-8");
+        
+        // 2. Retrieve credentials submitted from v-login.html
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        
+        // Safety Fallback: Ensure basic input validation to prevent blank SQL lookups
+        if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
+            response.sendRedirect("v-login.html?error=missing_credentials");
+            return;
+        }
+        
+        // 3. Delegate lookup to your VolunteerDAO
+        VolunteerDAO dao = new VolunteerDAO();
+        volunteer v = dao.loginVolunteer(email.trim(), password);
+        
+        // 4. Handle Authentication Results
+        if (v != null) {
+            // Defend against session-fixation vulnerabilities
+            HttpSession oldSession = request.getSession(false);
+            if (oldSession != null) {
+                oldSession.invalidate(); // Destroys previous session context
+            }
+            
+            // Generate a secure new session structure
+            HttpSession session = request.getSession(true);
+            
+            // Inject user details and access roles into session memory
+            session.setAttribute("currentVolunteer", v);
+            session.setAttribute("userRole", "volunteer");
+            
+            // Route the authenticated student to their private secured dashboard
+            response.sendRedirect("v-dashboard.jsp");
+        } else {
+            // Unsuccessful authentication attempt: Redirect back with error token
+            response.sendRedirect("v-login.html?error=invalid_credentials");
+        }
     }
 
     /**
