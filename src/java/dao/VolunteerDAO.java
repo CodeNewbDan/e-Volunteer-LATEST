@@ -4,8 +4,6 @@ package dao;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-import java.sql.*;
-import com.model.volunteer;
 /**
  *
  * @author hansz
@@ -18,13 +16,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class VolunteerDAO {
+
     private static final String URL = "jdbc:derby://localhost:1527/eVolunteer";
     private static final String USER = "app";
     private static final String PASS = "app";
 
-<<<<<<< Updated upstream
-    public VolunteerDAO() {}
-    
+    public VolunteerDAO() {
+    }
+
     protected Connection getConnection() throws SQLException {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -127,106 +126,6 @@ public class VolunteerDAO {
         v.setCourse(rs.getString("Course"));
         v.setTotalHours(rs.getDouble("TotalHours"));
         return v;
-=======
-    public VolunteerDAO() {
-        
->>>>>>> Stashed changes
     }
-    
-    protected Connection getConnection() throws SQLException{
-        try{
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        }catch (ClassNotFoundException e){
-            e.printStackTrace();
-        }
-        return DriverManager.getConnection(URL, USER, PASS);
-    }
-    
-    public boolean registerVolunteer(volunteer v) {
-        String sql = "INSERT INTO Volunteers (name, email, password, hours) VALUES (?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, v.getName());
-            ps.setString(2, v.getEmail());
-            ps.setString(3, v.getPassword());
-            ps.setDouble(4, v.getHours());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return true;
-        }
-    }
-    
-    public volunteer loginVolunteer(String email, String pwd) {
-        String sql = "SELECT * FROM Volunteers WHERE email = ? AND password = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.setString(2, pwd);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return mapVolunteer(rs);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    public volunteer getVolunteerById(int id) {
-        String sql = "SELECT * FROM Volunteers WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return mapVolunteer(rs);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    public boolean updateVolunteerProfile(volunteer v) {
-        String sql = "UPDATE Volunteers SET name = ?, email = ?, password = ? WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, v.getName());
-            ps.setString(2, v.getEmail());
-            ps.setString(3, v.getPassword());
-            ps.setInt(4, v.getId());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
- 
-    /** Used to modify cached hours */
-    public boolean updateVolunteerHours(int id, double newHours) {
-        String sql = "UPDATE Volunteers SET hours = ? WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setDouble(1, newHours);
-            ps.setInt(2, id);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
- 
-    private volunteer mapVolunteer(ResultSet rs) throws SQLException {
-        volunteer v = new volunteer();
-        v.setId(rs.getInt("id"));
-        v.setName(rs.getString("name"));
-        v.setEmail(rs.getString("email"));
-        v.setPassword(rs.getString("password"));
-        v.setHours(rs.getDouble("hours"));
-        return v;
-    }
-    
-    
-    
+
 }
