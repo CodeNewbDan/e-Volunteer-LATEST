@@ -1,3 +1,5 @@
+package dao;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -7,15 +9,15 @@
  *
  * @author hansz
  */
+import model.organization;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import com.model.*;
 
 public class OrganizationDAO {
-    private static final String URL = "jdbc:derby://localhost:1527/eVolunteer/VOLUNTEER";
+    private static final String URL = "jdbc:derby://localhost:1527/eVolunteer";
     private static final String USER = "app";
     private static final String PASS = "app";
 
@@ -23,8 +25,13 @@ public class OrganizationDAO {
     }
     
     
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:derby:volunteerDB;create=true");
+    protected Connection getConnection() throws SQLException {
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return DriverManager.getConnection(URL, USER, PASS);
     }
 
     public boolean registerOrg(organization org) {

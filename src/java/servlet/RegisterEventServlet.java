@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.servlet;
+package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,13 +10,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.volunteer;
+import dao.AttendanceDAO;
 
 /**
  *
  * @author Asus
  */
-public class VerifyAttendanceServlet extends HttpServlet {
-
+public class RegisterEventServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,10 +37,10 @@ public class VerifyAttendanceServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VerifyAttendanceServlet</title>");
+            out.println("<title>Servlet RegisterEventServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VerifyAttendanceServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RegisterEventServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,7 +58,8 @@ public class VerifyAttendanceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // Safe fall-through: Route any GET requests to the main POST handler
+        doPost(request, response);
     }
 
     /**
@@ -69,7 +73,48 @@ public class VerifyAttendanceServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       
+        // 1. Force UTF-8 character encoding standards
+        request.setCharacterEncoding("UTF-8");
+        
+        // 2. Validate current session and retrieve logged-in volunteer context
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("currentVolunteer") == null) {
+            response.sendRedirect("v-login.html?error=session_expired");
+            return;
+        }
+        
+        volunteer student = (volunteer) session.getAttribute("currentVolunteer");
+        
+        // 3. Extract parameter from HTML Form submission (sign-up button click)
+        String eventParam = request.getParameter("eventId");
+        if (eventParam == null || eventParam.trim().isEmpty()) {
+            response.sendRedirect("v-browse-events.jsp?error=missing_event");
+            return;
+        }
+        
+        try {
+            int eventId = Integer.parseInt(eventParam.trim());
+            int volunteerId = student.getVolunteerId(); // Aligned to getVolunteerId() in volunteer.java POJO
+            
+            // 4. Delegate registration creation to AttendanceDAO
+            AttendanceDAO dao = new AttendanceDAO();
+            boolean success = dao.registerForEvent(volunteerId, eventId);
+            
+            if (success) {
+                // Redirect back to dashboard upon successful registration with status token
+                response.sendRedirect("v-dashboard.jsp?status=registered");
+            } else {
+                response.sendRedirect("v-browse-events.jsp?error=registration_failed_or_already_registered");
+            }
+            
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect("v-browse-events.jsp?error=invalid_event_id_format");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("v-browse-events.jsp?error=system_error");
+        }
     }
 
     /**

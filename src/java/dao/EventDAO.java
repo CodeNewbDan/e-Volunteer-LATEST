@@ -1,3 +1,5 @@
+package dao;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -11,14 +13,14 @@ import com.model.event;
  *
  * @author hansz
  */
+import model.event;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.model.*;
 
 public class EventDAO {
 
-    private static final String URL = "jdbc:derby://localhost:1527/eVolunteer/VOLUNTEER";
+    private static final String URL = "jdbc:derby://localhost:1527/eVolunteer";
     private static final String USER = "app";
     private static final String PASS = "app";
 
