@@ -4,7 +4,6 @@
  */
 package servlet;
 
-import dao.VolunteerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -95,7 +94,7 @@ public class RegisterVolunteerServlet extends HttpServlet {
             v.setVolunteerPassword(password);
             v.setCourse(course);
             v.setTotalHours(0.00); // Initializes starting hours to 0.00
-            
+
             // 3. Process database insert via synchronized DAO
             VolunteerDAO dao = new VolunteerDAO();
             boolean success = dao.registerVolunteer(v);
@@ -105,7 +104,7 @@ public class RegisterVolunteerServlet extends HttpServlet {
             } else {
                 response.sendRedirect("v-register.html?error=failed");
             }
-            
+
         } catch (NumberFormatException e) {
             // Catches any invalid numerical inputs for StudentID or Phone Number
             e.printStackTrace();
