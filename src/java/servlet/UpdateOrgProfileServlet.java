@@ -119,7 +119,7 @@ public class UpdateOrgProfileServlet extends HttpServlet {
             if (success) {
                 // Instantly sync the active session to display updated credentials in JSP pages
                 session.setAttribute("currentOrg", updated);
-                response.sendRedirect("org-profile.jsp?status=success");
+                response.sendRedirect(request.getContextPath() + "/organization/org-profile.jsp?status=success");
             } else {
                 response.sendRedirect("org-profile.jsp?error=database_error");
             }

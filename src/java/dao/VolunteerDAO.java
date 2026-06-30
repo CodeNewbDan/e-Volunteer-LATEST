@@ -14,6 +14,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VolunteerDAO {
 
@@ -127,5 +129,44 @@ public class VolunteerDAO {
         v.setTotalHours(rs.getDouble("TotalHours"));
         return v;
     }
+    
+    public List<volunteer> getAllVolunteersSortedByHours() {
+        List<volunteer> list = new ArrayList<>();
+        String sql = "SELECT * FROM Volunteer ORDER BY TotalHours DESC";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                volunteer v = new volunteer();
+                v.setVolunteerId(rs.getInt("VolunteerID"));
+                v.setStudentId(rs.getInt("StudentID"));
+                v.setFullName(rs.getString("FullName"));
+                v.setVolunteerEmail(rs.getString("Volunteer_Email"));
+
+                // Safe parsing: Database holds PhoneNumber as VARCHAR, POJO maps to Java int
+                String phoneStr = rs.getString("PhoneNumber");
+                int parsedPhone = 0;
+                if (phoneStr != null && !phoneStr.trim().isEmpty()) {
+                    try {
+                        parsedPhone = Integer.parseInt(phoneStr.trim());
+                    } catch (NumberFormatException e) {
+                        parsedPhone = 0; // fallback if string contains formatting characters (+, -, space)
+                    }
+                }
+                v.setPhoneNum(parsedPhone);
+
+                v.setVolunteerAddress(rs.getString("Address"));
+                v.setVolunteerPassword(rs.getString("Password"));
+                v.setCourse(rs.getString("Course"));
+                v.setTotalHours(rs.getDouble("TotalHours"));
+
+                list.add(v);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
 
 }

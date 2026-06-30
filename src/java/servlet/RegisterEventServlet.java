@@ -102,10 +102,11 @@ public class RegisterEventServlet extends HttpServlet {
             boolean success = dao.registerForEvent(volunteerId, eventId);
             
             if (success) {
-                // Redirect back to dashboard upon successful registration with status token
-                response.sendRedirect("v-dashboard.jsp?status=registered");
+                // FIXED REDIRECT PATH: Explicitly route the browser into the /volunteer/ subfolder
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-dashboard.jsp?status=registered");
             } else {
-                response.sendRedirect("v-browse-events.jsp?error=registration_failed_or_already_registered");
+                // FIXED REDIRECT PATH: Route back to the browse page within the secure subdirectory
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-browse-events.jsp?error=registration_failed_or_already_registered");
             }
             
         } catch (NumberFormatException e) {

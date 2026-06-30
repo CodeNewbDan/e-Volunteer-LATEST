@@ -73,7 +73,7 @@ public class LogoutServlet extends HttpServlet {
             session.invalidate();
         }
         // 4. Safely redirect the user to the public landing page
-        response.sendRedirect("index.html?status=logged_out");
+        response.sendRedirect(request.getContextPath() + "/public/index.html?status=logged_out");
             
         
     }

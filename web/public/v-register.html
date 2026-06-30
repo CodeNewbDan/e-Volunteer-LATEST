@@ -5,11 +5,52 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Volunteer Registration</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <h1>Volunteer Registration</h1>
+        <p>Join E-Sukarelawan to register for CSR events and track your volunteer hours.</p>
+        <a href="index.html">Back to Home</a> | <a href="v-login.html">Already have an account? Login here</a>
+        <hr>
+
+        <!-- Submits back one folder level to RegisterVolunteerServlet -->
+        <form action="../RegisterVolunteerServlet" method="POST">
+            <table>
+                <tr>
+                    <td><label for="studentId">Student ID (Numbers Only):</label></td>
+                    <td><input type="number" id="studentId" name="studentId" required placeholder="e.g., 20261234"></td>
+                </tr>
+                <tr>
+                    <td><label for="fullName">Full Name:</label></td>
+                    <td><input type="text" id="fullName" name="fullName" required placeholder="e.g., John Doe"></td>
+                </tr>
+                <tr>
+                    <td><label for="volunteerEmail">Email Address:</label></td>
+                    <td><input type="email" id="volunteerEmail" name="volunteerEmail" required placeholder="e.g., student@university.edu"></td>
+                </tr>
+                <tr>
+                    <td><label for="phoneNum">Phone Number (Numbers Only):</label></td>
+                    <td><input type="number" id="phoneNum" name="phoneNum" required placeholder="e.g., 60123456789"></td>
+                </tr>
+                <tr>
+                    <td><label for="course">Course / Programme:</label></td>
+                    <td><input type="text" id="course" name="course" required placeholder="e.g., Computer Science"></td>
+                </tr>
+                <tr>
+                    <td><label for="volunteerAddress">Home Address:</label></td>
+                    <td><textarea id="volunteerAddress" name="volunteerAddress" rows="4" cols="30" required placeholder="Enter full address..."></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="volunteerPassword">Password:</label></td>
+                    <td><input type="password" id="volunteerPassword" name="volunteerPassword" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button type="submit">Submit Registration</button></td>
+                </tr>
+            </table>
+        </form>
     </body>
 </html>

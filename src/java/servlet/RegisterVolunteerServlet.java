@@ -78,10 +78,10 @@ public class RegisterVolunteerServlet extends HttpServlet {
             // 1. Retrieve and parse parameter types exactly as declared in volunteer.java (int for studentId and phoneNum)
             int studentId = Integer.parseInt(request.getParameter("studentId"));
             String fullName = request.getParameter("fullName");
-            String email = request.getParameter("email");
+            String email = request.getParameter("volunteerEmail");
             int phoneNum = Integer.parseInt(request.getParameter("phoneNum"));
-            String address = request.getParameter("address");
-            String password = request.getParameter("password");
+            String address = request.getParameter("volunteerAddress");
+            String password = request.getParameter("volunteerPassword");
             String course = request.getParameter("course");
 
             // 2. Instantiate and bind to the lowercase 'volunteer' model
@@ -100,9 +100,9 @@ public class RegisterVolunteerServlet extends HttpServlet {
             boolean success = dao.registerVolunteer(v);
 
             if (success) {
-                response.sendRedirect("v-login.html?status=registered");
+                response.sendRedirect("public/v-login.html?status=registered"); // No leading slash!
             } else {
-                response.sendRedirect("v-register.html?error=failed");
+                response.sendRedirect("public/v-register.html?error=failed");
             }
 
         } catch (NumberFormatException e) {

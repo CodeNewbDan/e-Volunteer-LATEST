@@ -19,7 +19,9 @@ import dao.*;
  * @author Asus
  */
 public class VerifyAttendanceServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -72,91 +74,91 @@ public class VerifyAttendanceServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // 1. Force UTF-8 encoding standards
         request.setCharacterEncoding("UTF-8");
-        
+
         // 2. Validate current session and retrieve logged-in volunteer context
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("currentVolunteer") == null) {
             response.sendRedirect("v-login.html?error=session_expired");
             return;
         }
-        
+
         volunteer student = (volunteer) session.getAttribute("currentVolunteer");
-        
+
         // 3. Extract inputs from form parameters
         String eventIdStr = request.getParameter("eventId");
         String userInputCode = request.getParameter("secretCode");
-        
+
         // Validate eventId parameter using helper method
         if (isParamEmpty(eventIdStr)) {
             response.sendRedirect("v-verify-attendance.jsp?error=missing_event_id");
             return;
         }
-        
+
         if (userInputCode == null) {
             userInputCode = "";
         }
         userInputCode = userInputCode.trim();
-        
+
         try {
             int eventId = Integer.parseInt(eventIdStr.trim());
-            
+
             // 4. Retrieve event details from the database using EventDAO to compare codes
             EventDAO eventDAO = new EventDAO();
             event targetEvent = eventDAO.getEventById(eventId);
-            
+
             if (targetEvent == null) {
                 response.sendRedirect("v-verify-attendance.jsp?error=invalid_event");
                 return;
             }
-            
+
             // 5. Evaluate the user's input code case-insensitively
             if (targetEvent.getSecretCode().equalsIgnoreCase(userInputCode)) {
-                
+
                 AttendanceDAO attendanceDAO = new AttendanceDAO();
                 int volunteerId = student.getVolunteerId(); // Aligned to getVolunteerId() in volunteer.java
-                
+
                 // 6. Mark Registration attendance status as 'Verified'
                 boolean updateStatusSuccess = attendanceDAO.verifyRegistrationStatus(volunteerId, eventId);
-                
+
                 if (updateStatusSuccess) {
                     // 7. Calculate and persist new denormalized total hours (Current Hours + Event Hours)
                     double addedHours = targetEvent.getEventHour(); // Aligned to getEventHour() in event.java POJO
                     double updatedTotal = student.getTotalHours() + addedHours;
-                    
+
                     VolunteerDAO volunteerDAO = new VolunteerDAO();
                     boolean updateHoursSuccess = volunteerDAO.updateVolunteerHours(volunteerId, updatedTotal);
-                    
+
                     if (updateHoursSuccess) {
                         // 8. CRITICAL: Refresh the active HTTP Session object in real-time!
                         // This updates the user's session instantly without needing a logout/login cycle.
                         student.setTotalHours(updatedTotal);
                         session.setAttribute("currentVolunteer", student);
-                        
-                        response.sendRedirect("v-dashboard.jsp?status=verification_success&hours=" + addedHours);
+
+                        response.sendRedirect(request.getContextPath() + "/volunteer/v-dashboard.jsp?status=verified");
                     } else {
-                        response.sendRedirect("v-verify-attendance.jsp?eventId=" + eventId + "&error=hours_update_failed");
+                        response.sendRedirect(request.getContextPath() + "/volunteer/v-verify-attendance.jsp?eventId=" + eventId + "&error=database_error");
                     }
                 } else {
-                    response.sendRedirect("v-verify-attendance.jsp?eventId=" + eventId + "&error=attendance_status_update_failed");
+                    response.sendRedirect(request.getContextPath() + "/volunteer/v-verify-attendance.jsp?eventId=" + eventId + "&error=database_error");
                 }
             } else {
                 // Secret validation code mismatch
-                response.sendRedirect("v-verify-attendance.jsp?eventId=" + eventId + "&error=code_mismatch");
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-verify-attendance.jsp?error=1");
             }
-            
+
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            response.sendRedirect("v-verify-attendance.jsp?error=invalid_event_id_format");
+            response.sendRedirect(request.getContextPath() + "/volunteer/v-verify-attendance.jsp?error=database_error");
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("v-verify-attendance.jsp?error=system_error");
+            response.sendRedirect(request.getContextPath() + "/volunteer/v-verify-attendance.jsp?error=database_error");
         }
-        
+
     }
-    
+
     private boolean isParamEmpty(String value) {
         return value == null || value.trim().isEmpty();
     }

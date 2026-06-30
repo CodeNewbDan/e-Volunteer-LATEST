@@ -56,9 +56,10 @@ public class AttendanceDAO {
      */
     public List<event> getPendingRegisteredEvents(int volunteerId) {
         List<event> events = new ArrayList<>();
-        String sql = "SELECT e.* FROM Event e "
-                + "JOIN Registration r ON e.EventID = r.EventID "
-                + "WHERE r.VolunteerID = ? AND r.AttendanceStatus = 'Pending'";
+        String sql = "SELECT e.* FROM Event e " +
+                 "JOIN Registration r ON e.EventID = r.EventID " +
+                 "WHERE r.VolunteerID = ? AND r.AttendanceStatus = 'Pending' " +
+                 "ORDER BY e.EventDate ASC";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, volunteerId);
@@ -137,6 +138,34 @@ public class AttendanceDAO {
         reg.setVerificationDate(rs.getString("VerificationDate"));
 
         return reg;
+    }
+    
+    public List<registration> getAttendanceByVolunteerId(int volunteerId) {
+        List<registration> list = new ArrayList<>();
+        String sql = "SELECT * FROM Registration WHERE VolunteerID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, volunteerId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    registration reg = new registration();
+                    reg.setRegisterId(rs.getInt("RegistrationID"));
+                    reg.setVolunteerId(rs.getInt("VolunteerID"));
+                    reg.setEventId(rs.getInt("EventID"));
+                    reg.setAttendanceStatus(rs.getString("AttendanceStatus"));
+
+                    // Set timestamps if available in your model
+                    reg.setRegisterDate("RegistrationDate");
+                    reg.setAttendanceDate("AttendanceDate");
+                    reg.setVerificationDate("VerificationDate");
+
+                    list.add(reg);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
 }

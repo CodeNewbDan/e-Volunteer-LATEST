@@ -5,11 +5,36 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Volunteer Login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <h1>Volunteer Login</h1>
+    <p>Enter your student credentials to manage registrations and verify hours.</p>
+    <a href="index.html">Back to Home</a> | <a href="v-register.html">Need an account? Register here</a>
+    <hr>
+
+    <!-- Redirect Query Token Catchers (To display status to users visually without Javascript alerts) -->
+    <div id="statusMessage"></div>
+
+    <!-- Submits back one folder level to VolunteerLoginServlet -->
+    <form action="../VolunteerLoginServlet" method="POST">
+        <table>
+            <tr>
+                <td><label for="volunteerEmail">Email Address:</label></td>
+                <td><input type="email" id="volunteerEmail" name="volunteerEmail" required></td>
+            </tr>
+            <tr>
+                <td><label for="volunteerPassword">Password:</label></td>
+                <td><input type="password" id="volunteerPassword" name="volunteerPassword" required></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button type="submit">Login</button></td>
+            </tr>
+        </table>
+    </form>
+
     </body>
 </html>

@@ -98,7 +98,7 @@ public class DeleteEventServlet extends HttpServlet {
             boolean success = dao.deleteEvent(eventId);
 
             if (success) {
-                response.sendRedirect("org-manage-events.jsp?status=deleted");
+                response.sendRedirect(request.getContextPath() + "/organization/org-manage-events.jsp?status=deleted");
             } else {
                 response.sendRedirect("org-manage-events.jsp?error=delete_failed");
             }

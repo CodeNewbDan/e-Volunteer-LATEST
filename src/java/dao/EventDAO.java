@@ -34,15 +34,23 @@ public class EventDAO {
     }
 
     public boolean createEvent(event event) {
-        String sql = "INSERT INTO Event (eventName, date, location, numOfVolunteer, desc, eventHour, secretCode) VALUES (?, ?, ?, ? ?, ?, ?, ?)";
+        String sql = "INSERT INTO Event (OrganizationID, EventName, EventDate, Location, EventStatus, RequiredVolunteers, TaskDescription, EventVolunteerHour, SecretCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, event.getEventName());
-            ps.setString(2, event.getEventDate());
-            ps.setString(3, event.getLocation());
-            ps.setInt(5, event.getNumOfVolunteer());
-            ps.setString(6, event.getTaskDesc());
-            ps.setDouble(7, event.getEventHour());
-            ps.setString(8, event.getSecretCode());
+
+            ps.setInt(1, event.getOrgId());
+            ps.setString(2, event.getEventName());
+
+            // Safe conversion of HTML Datepicker String (YYYY-MM-DD) to java.sql.Date for Derby
+            ps.setDate(3, java.sql.Date.valueOf(event.getEventDate()));
+
+            ps.setString(4, event.getLocation());
+            ps.setString(5, event.getStatus());
+            ps.setInt(6, event.getNumOfVolunteer());
+            ps.setString(7, event.getTaskDesc());
+            ps.setDouble(8, event.getEventHour());
+            ps.setString(9, event.getSecretCode());
+
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,12 +59,14 @@ public class EventDAO {
     }
 
     public event getEventById(int id) {
-        String sql = "SELECT * FROM Event WHERE id = ?";
+        String sql = "SELECT * FROM Event WHERE EventID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return mapEvent(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapEvent(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,7 +76,7 @@ public class EventDAO {
 
     public List<event> getAllEvents() {
         List<event> event = new ArrayList<>();
-        String sql = "SELECT * FROM Events";
+        String sql = "SELECT * FROM Event";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 event.add(mapEvent(rs));
@@ -79,7 +89,7 @@ public class EventDAO {
 
     public List<event> getEventsByOrgId(int orgId) {
         List<event> event = new ArrayList<>();
-        String sql = "SELECT * FROM Events WHERE orgId = ?";
+        String sql = "SELECT * FROM Event WHERE OrganizationId = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, orgId);
             ResultSet rs = ps.executeQuery();
@@ -93,15 +103,20 @@ public class EventDAO {
     }
 
     public boolean updateEvent(event event) {
-        String sql = "UPDATE Events SET title = ?, description = ?, orgId = ?, eventDate = ? WHERE id = ?";
+        String sql = "UPDATE Event SET EventName = ?, EventDate = ?, Location = ?, RequiredVolunteers = ?, TaskDescription = ?, EventVolunteerHour = ?, SecretCode = ?, EventStatus = ? WHERE EventID = ?";
+
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, event.getEventName());
-            ps.setString(2, event.getEventDate());
+            ps.setDate(2, java.sql.Date.valueOf(event.getEventDate()));
             ps.setString(3, event.getLocation());
-            ps.setInt(5, event.getNumOfVolunteer());
-            ps.setString(6, event.getTaskDesc());
-            ps.setDouble(7, event.getEventHour());
-            ps.setString(8, event.getSecretCode());
+            ps.setInt(4, event.getNumOfVolunteer());
+            ps.setString(5, event.getTaskDesc());
+            ps.setDouble(6, event.getEventHour());
+            ps.setString(7, event.getSecretCode());
+            ps.setString(8, event.getStatus());
+            ps.setInt(9, event.getEventId());
+
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,7 +125,7 @@ public class EventDAO {
     }
 
     public boolean deleteEvent(int eventId) {
-        String sql = "DELETE FROM Events WHERE id = ?";
+        String sql = "DELETE FROM Event WHERE EventID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, eventId);
             return ps.executeUpdate() > 0;
@@ -121,16 +136,22 @@ public class EventDAO {
     }
 
     private event mapEvent(ResultSet rs) throws SQLException {
-        event event = new event();
-        event.setEventName(rs.getString("eventName"));
-        event.setEventDate(rs.getString("date"));
-        event.setLocation(rs.getString("location"));
-        event.setStatus(rs.getString("status"));
-        event.setNumOfVolunteer(rs.getInt("numOfVolunteer"));
-        event.setTaskDesc(rs.getString("desc"));
-        event.setEventHour(rs.getInt("hour"));
-        event.setSecretCode(rs.getString("code"));
+        event ev = new event();
+        ev.setEventId(rs.getInt("EventID"));
+        ev.setOrgId(rs.getInt("OrganizationID"));
+        ev.setEventName(rs.getString("EventName"));
 
-        return event;
+        // Converts SQL Date dynamically into java.lang.String property format (YYYY-MM-DD)
+        if (rs.getDate("EventDate") != null) {
+            ev.setEventDate(rs.getDate("EventDate").toString());
+        }
+
+        ev.setLocation(rs.getString("Location"));
+        ev.setStatus(rs.getString("EventStatus"));
+        ev.setNumOfVolunteer(rs.getInt("RequiredVolunteers"));
+        ev.setTaskDesc(rs.getString("TaskDescription"));
+        ev.setEventHour(rs.getDouble("EventVolunteerHour"));
+        ev.setSecretCode(rs.getString("SecretCode"));
+        return ev;
     }
 }

@@ -99,9 +99,9 @@ public class RegisterOrgServlet extends HttpServlet {
             boolean success = dao.registerOrg(org);
 
             if (success) {
-                response.sendRedirect("org-login.html?status=registered");
+                response.sendRedirect(request.getContextPath() + "/public/org-login.html?status=registered");
             } else {
-                response.sendRedirect("org-register.html?error=failed");
+                response.sendRedirect(request.getContextPath() + "/public/org-register.html?error=failed");
             }
 
         } catch (NumberFormatException e) {

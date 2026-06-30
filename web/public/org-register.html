@@ -5,11 +5,58 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Organization Registration</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <h1>Organization Registration</h1>
+        <p>Register your NGO, Club, or Society to publish volunteer calls and events.</p>
+        <a href="index.html">Back to Home</a> | <a href="org-login.html">Already registered? Login here</a>
+        <hr>
+
+        <!-- Submits back one folder level to RegisterOrgServlet -->
+        <form action="../RegisterOrgServlet" method="POST">
+            <table>
+                <tr>
+                    <td><label for="orgName">Organization Name:</label></td>
+                    <td><input type="text" id="orgName" name="orgName" required placeholder="e.g., Computer Science Club"></td>
+                </tr>
+                <tr>
+                    <td><label for="registrationNum">Registration / Club ID Number:</label></td>
+                    <td><input type="number" id="registrationNum" name="registrationNum" required placeholder="e.g., 992026"></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Official Email Address:</label></td>
+                    <td><input type="email" id="email" name="orgEmail" required placeholder="e.g., contact@myclub.org"></td>
+                </tr>
+                <tr>
+                    <td><label for="contactPerson">Contact Phone Number (Numbers Only):</label></td>
+                    <td><input type="number" id="contactPerson" name="contactPerson" required placeholder="e.g., 60198765432"></td>
+                </tr>
+                <tr>
+                    <td><label for="orgType">Organization Type:</label></td>
+                    <td>
+                        <select id="orgType" name="orgType" required>
+                            <option value="">-- Select Type --</option>
+                            <option value="Club">Student Club / Society</option>
+                            <option value="NGO">Non-Governmental Organization (NGO)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="address">Postal Address:</label></td>
+                    <td><textarea id="address" name="orgAddress" rows="4" cols="30" required placeholder="Enter postal address..."></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password:</label></td>
+                    <td><input type="password" id="password" name="password" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button type="submit">Submit Registration</button></td>
+                </tr>
+            </table>
+        </form>
     </body>
 </html>

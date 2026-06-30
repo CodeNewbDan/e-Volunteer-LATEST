@@ -121,9 +121,11 @@ public class CreateEventServlet extends HttpServlet {
             boolean success = dao.createEvent(newEvent);
 
             if (success) {
-                response.sendRedirect("org-manage-events.jsp?status=created");
+                // Redirect directly to the secure manage page with success token
+                response.sendRedirect(request.getContextPath() + "/organization/org-manage-events.jsp?status=created");
             } else {
-                response.sendRedirect("org-create-event.jsp?error=database_failure");
+                // FIXED REDIRECT PATH: Redirect back to the creation form with context path and subfolder
+                response.sendRedirect(request.getContextPath() + "/organization/org-create-event.jsp?error=database_failure");
             }
 
         } catch (NumberFormatException e) {

@@ -137,7 +137,7 @@ public class UpdateEventServlet extends HttpServlet {
             boolean success = dao.updateEvent(updatedEvent);
 
             if (success) {
-                response.sendRedirect("org-manage-events.jsp?status=updated");
+                response.sendRedirect(request.getContextPath() + "/organization/org-manage-events.jsp?status=updated");
             } else {
                 response.sendRedirect("org-edit-event.jsp?eventId=" + eventId + "&error=database_failure");
             }

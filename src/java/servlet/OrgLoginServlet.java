@@ -106,10 +106,10 @@ public class OrgLoginServlet extends HttpServlet {
             session.setAttribute("userRole", "organization");
 
             // Route the organizer straight to their secured management space
-            response.sendRedirect("org-dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/organization/org-dashboard.jsp");
         } else {
             // Unsuccessful authentication: Redirect back with warning flag
-            response.sendRedirect("org-login.html?error=invalid_credentials");
+            response.sendRedirect("public/org-login.html?error=invalid_credentials");
         }
         
     }

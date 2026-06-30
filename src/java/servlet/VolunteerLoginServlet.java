@@ -77,8 +77,8 @@ public class VolunteerLoginServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         
         // 2. Retrieve credentials submitted from v-login.html
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String email = request.getParameter("volunteerEmail");
+        String password = request.getParameter("volunteerPassword");
         
         // Safety Fallback: Ensure basic input validation to prevent blank SQL lookups
         if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
@@ -106,7 +106,7 @@ public class VolunteerLoginServlet extends HttpServlet {
             session.setAttribute("userRole", "volunteer");
             
             // Route the authenticated student to their private secured dashboard
-            response.sendRedirect("v-dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/volunteer/v-dashboard.jsp");
         } else {
             // Unsuccessful authentication attempt: Redirect back with error token
             response.sendRedirect("v-login.html?error=invalid_credentials");

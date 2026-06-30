@@ -5,11 +5,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Organization Login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <h1>Organization Login</h1>
+        <p>Enter organizational credentials to post campaigns and verify attendance lists.</p>
+        <a href="index.html">Back to Home</a> | <a href="org-register.html">Need an account? Register your club here</a>
+        <hr>
+
+        <!-- Status feedback element for query parameters -->
+        <div id="statusMessage"></div>
+
+        <!-- Submits back one folder level to OrgLoginServlet -->
+        <form action="../OrgLoginServlet" method="POST">
+            <table>
+                <tr>
+                    <td><label for="email">Email Address:</label></td>
+                    <td><input type="email" id="email" name="email" required></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password:</label></td>
+                    <td><input type="password" id="password" name="password" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button type="submit">Login as Organization</button></td>
+                </tr>
+            </table>
+        </form>
     </body>
 </html>

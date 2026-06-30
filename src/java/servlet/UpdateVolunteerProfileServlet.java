@@ -72,7 +72,7 @@ public class UpdateVolunteerProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // 1. Force UTF-8 encoding standard
         request.setCharacterEncoding("UTF-8");
 
@@ -88,10 +88,10 @@ public class UpdateVolunteerProfileServlet extends HttpServlet {
         try {
             // 3. Extract updated form values and parse input formats safely
             String fullName = request.getParameter("fullName");
-            String email = request.getParameter("email");
+            String email = request.getParameter("volunteerEmail");
             int phoneNum = Integer.parseInt(request.getParameter("phoneNum")); // Parsed safely to int
-            String address = request.getParameter("address");
-            String password = request.getParameter("password");
+            String address = request.getParameter("volunteerAddress");
+            String password = request.getParameter("volunteerPassword");
             String course = request.getParameter("course");
 
             // 4. Construct the updated volunteer entity
@@ -115,11 +115,12 @@ public class UpdateVolunteerProfileServlet extends HttpServlet {
             boolean success = dao.updateVolunteerProfile(updated);
 
             if (success) {
-                // Update live active session attributes in real-time
+                // Update live active session attributes in real-time so changes reflect immediately
                 session.setAttribute("currentVolunteer", updated);
-                response.sendRedirect("v-profile.jsp?status=success");
+
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-profile.jsp?status=success");
             } else {
-                response.sendRedirect("v-profile.jsp?error=database_error");
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-profile.jsp?status=error");
             }
 
         } catch (NumberFormatException e) {
@@ -130,7 +131,7 @@ public class UpdateVolunteerProfileServlet extends HttpServlet {
             e.printStackTrace();
             response.sendRedirect("v-profile.jsp?error=system_error");
         }
-        
+
     }
 
     /**
