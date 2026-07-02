@@ -15,6 +15,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.OrgLeaderboard;
 
 public class OrganizationDAO {
     private static final String URL = "jdbc:derby://localhost:1527/eVolunteer";
@@ -110,5 +113,50 @@ public class OrganizationDAO {
         org.setOrgType(rs.getString("OrgType"));
         org.setOrgPassword(rs.getString("Password"));
         return org;
+    }
+    
+    public double getTotalUniversityHours() {
+        double total = 0.0;
+        String sql = "SELECT SUM(TotalHours) FROM Volunteer";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                total = rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+        
+    }
+    
+    public List<OrgLeaderboard> getClubLeaderboard() {
+        List<OrgLeaderboard> list = new ArrayList<>();
+        String sql = "SELECT o.OrganizationID, o.OrgName, o.OrgType, SUM(e.EventVolunteerHour) AS TotalHoursGenerated " +
+                     "FROM Organization o " +
+                     "JOIN Event e ON o.OrganizationID = e.OrganizationID " +
+                     "JOIN Registration r ON e.EventID = r.EventID " +
+                     "WHERE o.OrgType = 'Club' AND r.AttendanceStatus = 'Verified' " +
+                     "GROUP BY o.OrganizationID, o.OrgName, o.OrgType " +
+                     "ORDER BY TotalHoursGenerated DESC";
+        
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                OrgLeaderboard row = new OrgLeaderboard();
+                row.setOrgId(rs.getInt("OrganizationID"));
+                row.setOrgName(rs.getString("OrgName"));
+                row.setOrgType(rs.getString("OrgType"));
+                row.setTotalHoursGenerated(rs.getDouble("TotalHoursGenerated"));
+                list.add(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

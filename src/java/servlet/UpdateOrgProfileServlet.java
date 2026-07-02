@@ -86,6 +86,15 @@ public class UpdateOrgProfileServlet extends HttpServlet {
         organization currentOrg = (organization) session.getAttribute("currentOrg");
 
         try {
+            // 1. Current Password Verification Check (Mandatory field)
+            String currentPasswordInput = request.getParameter("currentPassword");
+            
+            // Validate user's input password against the stored password in session/database
+            if (currentPasswordInput == null || !currentPasswordInput.equals(currentOrg.getOrgPassword())) {
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-profile.jsp?status=wrong_password");
+                return;
+            }
+            
             // 3. Extract form parameters
             String orgName = request.getParameter("orgName");
             String orgEmail = request.getParameter("orgEmail");
@@ -95,8 +104,29 @@ public class UpdateOrgProfileServlet extends HttpServlet {
 
             String orgAddress = request.getParameter("orgAddress");
             String orgType = request.getParameter("orgType");
-            String orgPassword = request.getParameter("password"); // Maps the form password field
+            String orgPassword = request.getParameter("newPassword"); // Maps the form password field
+            String confirmPass = request.getParameter("confirmNewPassword");
 
+            // Validate that required fields are present
+            if (orgName == null || orgName.trim().isEmpty()
+                    || orgEmail == null || orgEmail.trim().isEmpty()) {
+
+                response.sendRedirect(request.getContextPath() + "/volunteer/org-profile.jsp?status=missing_fields");
+                return;
+            }
+            
+            // New Credential Validation Layer (Optional fields)
+            String finalPasswordToSave = currentOrg.getOrgPassword(); // Defaults to existing password
+            
+            if (orgPassword != null && !orgPassword.isEmpty()) {
+                if (confirmPass == null || !orgPassword.equals(confirmPass)) {
+                    // Fail redirect if new credentials don't match confirmation
+                    response.sendRedirect(request.getContextPath() + "/volunteer/v-profile.jsp?status=password_mismatch");
+                    return;
+                }
+                // Update finalPassword to the newly validated password
+                finalPasswordToSave = orgPassword;
+            }
             // 4. Construct updated organization entity
             organization updated = new organization();
 
@@ -110,7 +140,7 @@ public class UpdateOrgProfileServlet extends HttpServlet {
             updated.setContactPerson(contactPerson);
             updated.setOrgAddress(orgAddress);
             updated.setOrgType(orgType);
-            updated.setOrgPassword(orgPassword);
+            updated.setOrgPassword(finalPasswordToSave);
 
             // 5. Delegate profile persistence to your OrganizationDAO
             OrganizationDAO dao = new OrganizationDAO();

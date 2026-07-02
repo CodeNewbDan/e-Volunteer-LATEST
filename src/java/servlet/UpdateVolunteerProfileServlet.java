@@ -86,15 +86,50 @@ public class UpdateVolunteerProfileServlet extends HttpServlet {
         volunteer currentVolunteer = (volunteer) session.getAttribute("currentVolunteer");
 
         try {
+            // 1. Current Password Verification Check (Mandatory field)
+            String currentPasswordInput = request.getParameter("currentPassword");
+
+            // Validate user's input password against the stored password in session/database
+            if (currentPasswordInput == null || !currentPasswordInput.equals(currentVolunteer.getVolunteerPassword())) {
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-profile.jsp?status=wrong_password");
+                return;
+            }
+
             // 3. Extract updated form values and parse input formats safely
             String fullName = request.getParameter("fullName");
             String email = request.getParameter("volunteerEmail");
             int phoneNum = Integer.parseInt(request.getParameter("phoneNum")); // Parsed safely to int
             String address = request.getParameter("volunteerAddress");
-            String password = request.getParameter("volunteerPassword");
+            String password = request.getParameter("newPassword");
             String course = request.getParameter("course");
+            String confirmPass = request.getParameter("confirmNewPassword");
 
-            // 4. Construct the updated volunteer entity
+            // Validate that required fields are present
+            if (fullName == null || fullName.trim().isEmpty()
+                    || email == null || email.trim().isEmpty()) {
+
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-profile.jsp?status=missing_fields");
+                return;
+            }
+
+            // New Credential Validation Layer (Optional fields)
+            String finalPasswordToSave = currentVolunteer.getVolunteerPassword(); // Defaults to existing password
+
+            if (password != null && !password.isEmpty()) {
+                if (confirmPass == null || !password.equals(confirmPass)) {
+                    // Fail redirect if new credentials don't match confirmation
+                    response.sendRedirect(request.getContextPath() + "/volunteer/v-profile.jsp?status=password_mismatch");
+                    return;
+                }
+                // Update finalPassword to the newly validated password
+                finalPasswordToSave = password;
+            }
+            
+            // Uppercase the name
+            String upperName = fullName.trim().toUpperCase();
+
+            
+            // Construct the updated volunteer entity
             volunteer updated = new volunteer();
 
             // SECURITY check: Maintain critical read-only keys from session state
@@ -103,11 +138,11 @@ public class UpdateVolunteerProfileServlet extends HttpServlet {
             updated.setTotalHours(currentVolunteer.getTotalHours());     // Verified hours are kept safe
 
             // Apply new profile modifications
-            updated.setFullName(fullName);
+            updated.setFullName(upperName);
             updated.setVolunteerEmail(email);
             updated.setPhoneNum(phoneNum);
             updated.setVolunteerAddress(address);
-            updated.setVolunteerPassword(password);
+            updated.setVolunteerPassword(finalPasswordToSave);
             updated.setCourse(course);
 
             // 5. Delegate profile persistence to your VolunteerDAO

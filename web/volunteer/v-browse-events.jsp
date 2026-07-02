@@ -9,6 +9,19 @@
 <%@ page import="model.event" %>
 <%@ page import="dao.EventDAO" %>
 <%@ page import="java.util.List" %>
+
+<%!
+    // Safe HTML Escaper to prevent XSS injection issues on dynamic DB renders
+    public String escapeHtml(String input) {
+        if (input == null) return "";
+        return input.replace("&", "&amp;")
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace("\"", "&quot;")
+                    .replace("'", "&#x27;");
+    }
+%>
+
 <%
     // Session Guard
     volunteer currentVolunteer = (volunteer) session.getAttribute("currentVolunteer");
@@ -54,22 +67,22 @@
             <%
                 try {
                     EventDAO eventDAO = new EventDAO();
-                    List<event> activeEvents = eventDAO.getAllEvents();
+                    List<event> activeEvents = eventDAO.getUnregisteredEventsForVolunteer(currentVolunteer.getVolunteerId());
                     
                     if (activeEvents == null || activeEvents.isEmpty()) {
             %>
                         <tr>
-                            <td colspan="7" align="center">No volunteer calls are currently active in the database system. Please check back later.</td>
+                            <td colspan="7" align="center">There are no new campaigns open for registration right now. Feel free to track your existing schedules or leaderboard ranking!</td>
                         </tr>
             <%
                     } else {
                         for (event ev : activeEvents) {
             %>
                             <tr>
-                                <td><strong><%= ev.getEventName() %></strong></td>
-                                <td><%= ev.getEventDate() %></td>
-                                <td><%= ev.getLocation() %></td>
-                                <td><%= ev.getTaskDesc() %></td>
+                                <td><strong><%= escapeHtml(ev.getEventName()) %></strong></td>
+                                <td><%= escapeHtml(ev.getEventDate()) %></td>
+                                <td><%= escapeHtml(ev.getLocation()) %></td>
+                                <td><%= escapeHtml(ev.getTaskDesc()) %></td>
                                 <td><%= ev.getNumOfVolunteer() %> seats open</td>
                                 <td style="color: blue; font-weight: bold;"><%= ev.getEventHour() %> Hours</td>
                                 <td>

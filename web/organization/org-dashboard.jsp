@@ -10,6 +10,9 @@
 <%@ page import="dao.EventDAO" %>
 <%@ page import="dao.AttendanceDAO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="model.OrgLeaderboard" %>
+<%@ page import="model.volunteer" %>
+<%@ page import="dao.OrganizationDAO" %>
 
 <%
     // Session Guard: Verify organization login state
@@ -40,6 +43,19 @@
             <a href="../LogoutServlet">Logout</a>
         </nav>
         <hr>
+        
+        <!-- NEW STATS BLOCK: UNIVERSITY TOTALS & CLUB LEADERBOARD -->
+        <h2>Total University Contributions</h2>
+        <%
+            OrganizationDAO metricsDAO = new OrganizationDAO();
+            double globalHours = metricsDAO.getTotalUniversityHours();
+        %>
+        <table border="1" cellpadding="8">
+            <tr>
+                <td><strong>Total Verified Social Impact Contribution by University:</strong></td>
+                <td><strong><%= globalHours%> Hours</strong></td>
+            </tr>
+        </table>
 
         <h2>Club Performance Metrics</h2>
 

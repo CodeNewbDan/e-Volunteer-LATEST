@@ -48,6 +48,10 @@
         <servlet-name>VerifyAttendanceServlet</servlet-name>
         <servlet-class>servlet.VerifyAttendanceServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateEventStatusServlet</servlet-name>
+        <servlet-class>servlet.UpdateEventStatusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterVolunteerServlet</servlet-name>
         <url-pattern>/RegisterVolunteerServlet</url-pattern>
@@ -95,5 +99,9 @@
     <servlet-mapping>
         <servlet-name>VerifyAttendanceServlet</servlet-name>
         <url-pattern>/VerifyAttendanceServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateEventStatusServlet</servlet-name>
+        <url-pattern>/UpdateEventStatusServlet</url-pattern>
     </servlet-mapping>
 </web-app>

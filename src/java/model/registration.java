@@ -22,13 +22,12 @@ public class registration {
     public registration() {
     }
 
-    public registration(int registerId, int id, int volunteerId, int eventId, String registerDate, String attendanceDate, String verificationDate, String attendanceStatus) {
+    public registration(int registerId, int id, int volunteerId, int eventId, String registerDate, String verificationDate, String attendanceStatus) {
         this.registerId = registerId;
         this.id = id;
         this.volunteerId = volunteerId;
         this.eventId = eventId;
         this.registerDate = registerDate;
-        this.attendanceDate = attendanceDate;
         this.verificationDate = verificationDate;
         this.attendanceStatus = attendanceStatus;
     }
@@ -71,14 +70,6 @@ public class registration {
 
     public void setRegisterDate(String registerDate) {
         this.registerDate = registerDate;
-    }
-
-    public String getAttendanceDate() {
-        return attendanceDate;
-    }
-
-    public void setAttendanceDate(String attendanceDate) {
-        this.attendanceDate = attendanceDate;
     }
 
     public String getVerificationDate() {

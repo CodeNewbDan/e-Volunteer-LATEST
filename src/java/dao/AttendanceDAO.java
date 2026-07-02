@@ -4,7 +4,6 @@ package dao;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author hansz
@@ -56,10 +55,10 @@ public class AttendanceDAO {
      */
     public List<event> getPendingRegisteredEvents(int volunteerId) {
         List<event> events = new ArrayList<>();
-        String sql = "SELECT e.* FROM Event e " +
-                 "JOIN Registration r ON e.EventID = r.EventID " +
-                 "WHERE r.VolunteerID = ? AND r.AttendanceStatus = 'Pending' " +
-                 "ORDER BY e.EventDate ASC";
+        String sql = "SELECT e.* FROM Event e "
+                + "JOIN Registration r ON e.EventID = r.EventID "
+                + "WHERE r.VolunteerID = ? AND r.AttendanceStatus = 'Pending' "
+                + "ORDER BY e.EventDate ASC";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, volunteerId);
@@ -134,12 +133,11 @@ public class AttendanceDAO {
 
         // FIXED: Using rs.getTimestamp() safely to handle the database TIMESTAMP structures
         reg.setRegisterDate(rs.getString("RegistrationDate"));
-        reg.setAttendanceDate(rs.getString("AttendanceDate"));
         reg.setVerificationDate(rs.getString("VerificationDate"));
 
         return reg;
     }
-    
+
     public List<registration> getAttendanceByVolunteerId(int volunteerId) {
         List<registration> list = new ArrayList<>();
         String sql = "SELECT * FROM Registration WHERE VolunteerID = ?";
@@ -156,7 +154,6 @@ public class AttendanceDAO {
 
                     // Set timestamps if available in your model
                     reg.setRegisterDate("RegistrationDate");
-                    reg.setAttendanceDate("AttendanceDate");
                     reg.setVerificationDate("VerificationDate");
 
                     list.add(reg);

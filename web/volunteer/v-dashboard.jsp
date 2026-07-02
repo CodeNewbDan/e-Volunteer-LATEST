@@ -11,6 +11,9 @@
 <%@ page import="dao.AttendanceDAO" %>
 <%@ page import="dao.EventDAO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="model.OrgLeaderboard" %>
+<%@ page import="dao.OrganizationDAO" %>
+
 <%
     // Session Guard: Verify volunteer login state
     volunteer currentVolunteer = (volunteer) session.getAttribute("currentVolunteer");
@@ -57,8 +60,58 @@
             <a href="../LogoutServlet">Logout</a>
         </nav>
         <hr>
+        <!-- NEW STATS BLOCK: UNIVERSITY TOTALS & CLUB LEADERBOARD -->
+        <h2>Total University Contribution</h2>
+        <%
+            OrganizationDAO metricsDAO = new OrganizationDAO();
+            double globalHours = metricsDAO.getTotalUniversityHours();
+        %>
+        <table border="1" cellpadding="8">
+            <tr>
+                <td><strong>Total Verified Social Impact Contribution by University:</strong></td>
+                <td><strong><%= globalHours%> Hours</strong></td>
+            </tr>
+        </table>
 
-        <h2>My Social Contribution Profile</h2>
+        <h3>Student Clubs Social Impact Standings</h3>
+        <table border="1" cellpadding="6">
+            <thead>
+                <tr>
+                    <th>Leaderboard Ranking</th>
+                    <th>Club / Society Name</th>
+                    <th>Classification</th>
+                    <th>Total Verified Hours Generated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    List<OrgLeaderboard> clubBoard = metricsDAO.getClubLeaderboard();
+                    if (clubBoard == null || clubBoard.isEmpty()) {
+                %>
+                <tr>
+                    <td colspan="4" align="center">No active student club generated volunteer hours yet.</td>
+                </tr>
+                <%
+                } else {
+                    int rank = 1;
+                    for (OrgLeaderboard row : clubBoard) {
+                %>
+                <tr>
+                    <td align="center"><strong>#<%= rank++%></strong></td>
+                    <td><strong><%= row.getOrgName()%></strong></td>
+                    <td><%= row.getOrgType()%></td>
+                    <td><strong style="color:green;"><%= row.getTotalHoursGenerated()%> Hours</strong></td>
+                </tr>
+                <%
+                        }
+                    }
+                %>
+            </tbody>
+        </table>
+            
+            <hr>
+
+        <h2>My Personal Social Contribution Profile</h2>
         <table border="1" cellpadding="5">
             <tr>
                 <th>Accumulated Volunteer Hours</th>

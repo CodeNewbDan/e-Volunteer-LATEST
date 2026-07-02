@@ -3,25 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/organization/org-dashboard.jsp</file>
+            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/UpdateVolunteerProfileServlet.java</file>
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/organization/org-profile.jsp</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/UpdateOrgProfileServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/organization/org-manage-events.jsp</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/organization/org-create-event.jsp</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/CreateEventServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/organization/org-edit-events.jsp</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/organization/org-view-attendance.jsp</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/dao/EventDAO.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/UpdateEventServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/DeleteEventServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/model/event.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/volunteer/v-dashboard.jsp</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/volunteer/v-browse-events.jsp</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/RegisterEventServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/volunteer/v-verify-attendance.jsp</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/dao/AttendanceDAO.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/VerifyAttendanceServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/dao/OrganizationDAO.java</file>
         </group>
     </open-files>
 </project-private>

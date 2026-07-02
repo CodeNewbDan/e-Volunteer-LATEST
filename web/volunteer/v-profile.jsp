@@ -6,6 +6,18 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="model.volunteer" %>
+<%!
+    // Safe HTML Escaper to prevent XSS injection issues on dynamic DB renders
+    public String escapeHtml(String input) {
+        if (input == null) return "";
+        return input.replace("&", "&amp;")
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace("\"", "&quot;")
+                    .replace("'", "&#x27;");
+    }
+%>
+
 <%
     // Session Guard
     volunteer currentVolunteer = (volunteer) session.getAttribute("currentVolunteer");
@@ -90,20 +102,60 @@
                         <textarea id="volunteerAddress" name="volunteerAddress" rows="4" cols="40" required><%= currentVolunteer.getVolunteerAddress()%></textarea>
                     </td>
                 </tr>
+                <!-- SECTION: SECURE PASSWORDS UPDATE FIELDS -->
+                <tr style="background-color: #f2f2f2;">
+                    <td colspan="2"><strong>Credential Updates (Optional)</strong><br><small>Only fill in below if you wish to change your active login password.</small></td>
+                </tr>
                 <tr>
-                    <td><label for="volunteerPassword">Update Account Password</label></td>
+                    <td><label for="newPassword">New Password:</label></td>
                     <td>
-                        <input type="password" id="volunteerPassword" name="volunteerPassword" value="<%= currentVolunteer.getVolunteerPassword()%>" required>
-                        <br><small>Required for updates verification checks.</small>
+                        <input type="password" id="newPassword" name="newPassword" placeholder="Leave blank to keep current">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="confirmNewPassword">Confirm New Password:</label></td>
+                    <td>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Leave blank to keep current">
+                    </td>
+                </tr>
+
+                <!-- SECTION: SECURITY IDENTITY AUTHORIZATION (MANDATORY ROW) -->
+                <tr style="background-color: #fff9f9;">
+                    <td><label for="currentPassword" style="color:red; font-weight:bold;">CURRENT PASSWORD:</label></td>
+                    <td>
+                        <input type="password" id="currentPassword" name="currentPassword" required>
+                        <br><small style="color:red; font-weight:bold;">Required to authorize and authenticate these profile modifications.</small>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
                         <button type="submit">Save Profile Changes</button>
+                        <button type="reset">Reset Fields</button>
                     </td>
                 </tr>
             </table>
         </form>
+        <script>
+        // Client-side quick-validation checker
+        function validateProfileForm() {
+            const currentPass = document.getElementById("currentPassword").value.trim();
+            const newPass = document.getElementById("newPassword").value;
+            const confirmNewPass = document.getElementById("confirmNewPassword").value;
+
+            if (currentPass === "") {
+                alert("Please enter your current password to authorize updates.");
+                return false;
+            }
+
+            if (newPass !== "" || confirmNewPass !== "") {
+                if (newPass !== confirmNewPass) {
+                    alert("Validation Error: New Password and Confirm New Password fields do not match!");
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
     </body>
 </html>

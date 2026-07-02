@@ -90,12 +90,30 @@
                                 <td><%= ev.getNumOfVolunteer() %> volunteers</td>
                                 <td><code><%= ev.getSecretCode() %></code></td>
                                 <td>
-                                    <!-- Edit operation links into org-edit-event.jsp -->
-                                    <a href="org-edit-events.jsp?eventId=<%= ev.getEventId() %>">Edit</a> | 
-                                    
-                                    <!-- Delete operation safely maps via DeleteEventServlet -->
-                                    <a href="../DeleteEventServlet?eventId=<%= ev.getEventId() %>" 
-                                       onclick="return confirm('Are you sure you want to permanently delete this event? All student registration ties will be removed.');"
+                                    <% if ("Active".equalsIgnoreCase(ev.getStatus())) { %>
+                                    <span style="color: green; font-weight: bold;">Active</span>
+                                    <% } else if ("Canceled".equalsIgnoreCase(ev.getStatus())) { %>
+                                    <span style="color: red; font-weight: bold;">Canceled</span>
+                                    <% } else { %>
+                                    <span style="color: blue; font-weight: bold;">Finished</span>
+                                    <% }%>
+                                </td>
+                                <td>
+                                    <!-- Status update dropdown triggers submission automatically -->
+                                    <form action="../UpdateEventStatusServlet" method="POST" style="margin: 0; display: inline;">
+                                        <input type="hidden" name="eventId" value="<%= ev.getEventId()%>">
+                                        <select name="eventStatus" onchange="this.form.submit()">
+                                            <option value="">-- Toggle Status --</option>
+                                            <option value="Active" <%= "Active".equalsIgnoreCase(ev.getStatus()) ? "selected" : ""%>>Active</option>
+                                            <option value="Finished" <%= "Finished".equalsIgnoreCase(ev.getStatus()) ? "selected" : ""%>>Finished</option>
+                                            <option value="Canceled" <%= "Canceled".equalsIgnoreCase(ev.getStatus()) ? "selected" : ""%>>Canceled</option>
+                                        </select>
+                                    </form>
+                                </td>
+                                <td>
+                                    <a href="org-edit-event.jsp?eventId=<%= ev.getEventId()%>">Edit Details</a> | 
+                                    <a href="../DeleteEventServlet?eventId=<%= ev.getEventId()%>" 
+                                       onclick="return confirm('Are you sure you want to permanently delete this event?');"
                                        style="color:red;">Delete</a>
                                 </td>
                             </tr>

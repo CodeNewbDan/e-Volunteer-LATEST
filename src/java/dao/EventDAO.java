@@ -154,4 +154,24 @@ public class EventDAO {
         ev.setSecretCode(rs.getString("SecretCode"));
         return ev;
     }
+    
+    public List<event> getUnregisteredEventsForVolunteer(int volunteerId) {
+        List<event> list = new ArrayList<>();
+        String sql = "SELECT * FROM Event WHERE EventStatus = 'Active' AND EventID NOT IN ("
+                + "  SELECT EventID FROM Registration WHERE VolunteerID = ?"
+                + ") ORDER BY EventDate ASC";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, volunteerId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapEvent(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

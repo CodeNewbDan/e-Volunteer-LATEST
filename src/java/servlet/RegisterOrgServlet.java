@@ -84,6 +84,13 @@ public class RegisterOrgServlet extends HttpServlet {
             String orgType = request.getParameter("orgType");
             String orgPassword = request.getParameter("password"); // Maps form password field to orgPassword property
 
+            String confirmPass = request.getParameter("confirmPassword");
+            if (!orgPassword.equals(confirmPass)) {
+                response.sendRedirect(request.getContextPath() + "/public/v-register.html?error=password_mismatch");
+                return;
+            }
+            
+            
             // 2. Bind parsed values to the lowercase organization POJO
             organization org = new organization();
             org.setOrgName(orgName);

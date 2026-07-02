@@ -82,12 +82,20 @@ public class RegisterVolunteerServlet extends HttpServlet {
             int phoneNum = Integer.parseInt(request.getParameter("phoneNum"));
             String address = request.getParameter("volunteerAddress");
             String password = request.getParameter("volunteerPassword");
+            String confirmPass = request.getParameter("confirmPassword");
             String course = request.getParameter("course");
+
+            // Uppercase names and confirm password check
+            String upperName = fullName.trim().toUpperCase();
+            if (!password.equals(confirmPass)) {
+                response.sendRedirect(request.getContextPath() + "/public/v-register.html?error=password_mismatch");
+                return;
+            }
 
             // 2. Instantiate and bind to the lowercase 'volunteer' model
             volunteer v = new volunteer();
             v.setStudentId(studentId);
-            v.setFullName(fullName);
+            v.setFullName(upperName);
             v.setVolunteerEmail(email);
             v.setPhoneNum(phoneNum);
             v.setVolunteerAddress(address);
@@ -100,7 +108,7 @@ public class RegisterVolunteerServlet extends HttpServlet {
             boolean success = dao.registerVolunteer(v);
 
             if (success) {
-                response.sendRedirect("public/v-login.html?status=registered"); // No leading slash!
+                response.sendRedirect("public/v-login.html?status=registered"); 
             } else {
                 response.sendRedirect("public/v-register.html?error=failed");
             }
