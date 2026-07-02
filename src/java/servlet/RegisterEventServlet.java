@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.volunteer;
 import dao.AttendanceDAO;
+import model.event;
+import dao.EventDAO;
 
 /**
  *
@@ -95,10 +97,28 @@ public class RegisterEventServlet extends HttpServlet {
         
         try {
             int eventId = Integer.parseInt(eventParam.trim());
+            EventDAO eventDAO = new EventDAO();
             int volunteerId = student.getVolunteerId(); // Aligned to getVolunteerId() in volunteer.java POJO
             
             // 4. Delegate registration creation to AttendanceDAO
             AttendanceDAO dao = new AttendanceDAO();
+            
+            
+            event event = eventDAO.getEventById(eventId);
+            if (event == null) {
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-browse-events.jsp?error=event_not_found");
+                return;
+            }
+            
+            // Count total currently registered students for this event
+            int currentRegisteredCount = dao.getAttendanceByEventId(eventId).size();
+
+            if (currentRegisteredCount >= event.getNumOfVolunteer()) {
+                // Fail transaction gracefully - Event has reached full capacity!
+                response.sendRedirect(request.getContextPath() + "/volunteer/v-browse-events.jsp?error=event_full");
+                return;
+            }
+            
             boolean success = dao.registerForEvent(volunteerId, eventId);
             
             if (success) {

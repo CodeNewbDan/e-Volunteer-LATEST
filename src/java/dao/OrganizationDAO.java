@@ -117,7 +117,11 @@ public class OrganizationDAO {
     
     public double getTotalUniversityHours() {
         double total = 0.0;
-        String sql = "SELECT SUM(TotalHours) FROM Volunteer";
+        String sql = "SELECT SUM(e.EventVolunteerHour) "
+               + "FROM Registration r "
+               + "JOIN Event e ON r.EventID = e.EventID "
+               + "JOIN Organization o ON e.OrganizationID = o.OrganizationID "
+               + "WHERE r.AttendanceStatus = 'Verified' AND o.OrgType = 'Club'";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {

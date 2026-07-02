@@ -39,7 +39,19 @@
     <body>
         <h1>Active University Volunteer Calls</h1>
     <p>Review and join ongoing CSR campaigns to secure social service hour credits.</p>
-
+    <%
+            String status = request.getParameter("status");
+            String error = request.getParameter("error");
+            if ("event_not_found".equals(error)) {
+                out.println("<p style='color:green;'><strong>Event Not Found!</strong></p>");
+            } else if ("registered".equals(status)) {
+                out.println("<p style='color:green;'><strong>Successfully registered for the event! Check details below.</strong></p>");
+            } else if ("registration_failed_or_already_registered".equals(status)) {
+                out.println("<p style='color:green;'><strong>Already registered or register failed.Please try later.</strong></p>");
+            } else if ("event_full".equals(error)) {
+                out.println("<p style='color:red;'><strong>Sorry, but the event is full already! Thank you.</strong></p>");
+            }
+        %>
     <!-- Navigation Menu -->
     <nav>
         <a href="v-dashboard.jsp">Dashboard Home</a> | 
