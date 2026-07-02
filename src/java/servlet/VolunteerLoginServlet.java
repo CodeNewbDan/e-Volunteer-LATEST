@@ -82,7 +82,7 @@ public class VolunteerLoginServlet extends HttpServlet {
         
         // Safety Fallback: Ensure basic input validation to prevent blank SQL lookups
         if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
-            response.sendRedirect("v-login.html?error=missing_credentials");
+            response.sendRedirect("public/v-login.html?error=missing_credentials");
             return;
         }
         
@@ -109,7 +109,7 @@ public class VolunteerLoginServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/volunteer/v-dashboard.jsp");
         } else {
             // Unsuccessful authentication attempt: Redirect back with error token
-            response.sendRedirect("v-login.html?error=invalid_credentials");
+            response.sendRedirect("public/v-login.html?error=invalid_credentials");
         }
     }
 

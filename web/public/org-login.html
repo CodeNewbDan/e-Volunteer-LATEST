@@ -10,9 +10,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <div id="status-container"></div>
+
+        <script>
+            // Inline JavaScript to check URL parameter markers on load
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            const error = urlParams.get('error');
+            const container = document.getElementById('status-container');
+
+            if (status === 'registered') {
+                container.innerHTML = '<p><b>[SUCCESS]: Registration completed successfully! Please log in below.</b></p><hr>';
+            } else if (status === 'logged_out') {
+                container.innerHTML = '<p><b>[INFO]: You have been logged out securely.</b></p><hr>';
+            }
+
+            if (error === 'invalid_credentials') {
+                container.innerHTML = '<p><b>[ERROR]: Invalid Email or Password. Please try again.</b></p><hr>';
+            } else if (error === 'session_expired') {
+                container.innerHTML = '<p><b>[ERROR]: Security session expired or unauthenticated. Please log in.</b></p><hr>';
+            }
+        </script>
+        
         <h1>Organization Login</h1>
         <p>Enter organizational credentials to post campaigns and verify attendance lists.</p>
-        <a href="index.html">Back to Home</a> | <a href="org-register.html">Need an account? Register your club here</a>
+        <a href="index.html">Back to Home</a> | <a href="org-register.html">Need an account? Register your club/org here</a>
         <hr>
 
         <!-- Status feedback element for query parameters -->

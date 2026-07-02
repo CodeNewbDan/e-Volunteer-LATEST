@@ -91,14 +91,13 @@ public class UpdateOrgProfileServlet extends HttpServlet {
             
             // Validate user's input password against the stored password in session/database
             if (currentPasswordInput == null || !currentPasswordInput.equals(currentOrg.getOrgPassword())) {
-                response.sendRedirect(request.getContextPath() + "/volunteer/v-profile.jsp?status=wrong_password");
+                response.sendRedirect(request.getContextPath() + "/organization/org-profile.jsp?status=wrong_password");
                 return;
             }
             
             // 3. Extract form parameters
             String orgName = request.getParameter("orgName");
             String orgEmail = request.getParameter("orgEmail");
-
             // contactPerson is defined as 'int' in your organization.java model
             int contactPerson = Integer.parseInt(request.getParameter("contactPerson"));
 
@@ -111,7 +110,7 @@ public class UpdateOrgProfileServlet extends HttpServlet {
             if (orgName == null || orgName.trim().isEmpty()
                     || orgEmail == null || orgEmail.trim().isEmpty()) {
 
-                response.sendRedirect(request.getContextPath() + "/volunteer/org-profile.jsp?status=missing_fields");
+                response.sendRedirect(request.getContextPath() + "/organization/org-profile.jsp?status=missing_fields");
                 return;
             }
             
@@ -121,7 +120,7 @@ public class UpdateOrgProfileServlet extends HttpServlet {
             if (orgPassword != null && !orgPassword.isEmpty()) {
                 if (confirmPass == null || !orgPassword.equals(confirmPass)) {
                     // Fail redirect if new credentials don't match confirmation
-                    response.sendRedirect(request.getContextPath() + "/volunteer/v-profile.jsp?status=password_mismatch");
+                    response.sendRedirect(request.getContextPath() + "/organization/org-profile.jsp?status=password_mismatch");
                     return;
                 }
                 // Update finalPassword to the newly validated password

@@ -82,7 +82,7 @@ public class OrgLoginServlet extends HttpServlet {
 
         // Safety Fallback: Ensure basic input validation to prevent blank database queries
         if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
-            response.sendRedirect("org-login.html?error=missing_credentials");
+            response.sendRedirect("public/org-login.html?error=missing_credentials");
             return;
         }
 

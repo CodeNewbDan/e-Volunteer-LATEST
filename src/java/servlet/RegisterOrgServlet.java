@@ -86,7 +86,7 @@ public class RegisterOrgServlet extends HttpServlet {
 
             String confirmPass = request.getParameter("confirmPassword");
             if (!orgPassword.equals(confirmPass)) {
-                response.sendRedirect(request.getContextPath() + "/public/v-register.html?error=password_mismatch");
+                response.sendRedirect(request.getContextPath() + "/public/org-register.html?error=password_mismatch");
                 return;
             }
             

@@ -47,12 +47,19 @@
         </nav>
         <hr>
 
+        <!-- Context Status Message Blocks -->
         <%
             String status = request.getParameter("status");
             if ("success".equals(status)) {
-                out.println("<p style='color:green;'><strong>Profile details successfully updated and saved to DB!</strong></p><hr>");
+                out.println("<p style='color:green;'><strong>Profile details successfully updated and saved!</strong></p><hr>");
+            } else if ("wrong_password".equals(status)) {
+                out.println("<p style='color:red;'><strong>Verification Failed: The Current Password entered was incorrect. Changes refused.</strong></p><hr>");
+            } else if ("password_mismatch".equals(status)) {
+                out.println("<p style='color:red;'><strong>Validation Failed: New Password and Confirm New Password inputs do not match!</strong></p><hr>");
+            } else if ("missing_fields".equals(status)) {
+                out.println("<p style='color:red;'><strong>Validation Failed: Please fill in all required fields.</strong></p><hr>");
             } else if ("error".equals(status)) {
-                out.println("<p style='color:red;'><strong>Failed to update profile. Please verify database constraints.</strong></p><hr>");
+                out.println("<p style='color:red;'><strong>System Error: Could not update organization profile in database.</strong></p><hr>");
             }
         %>
 

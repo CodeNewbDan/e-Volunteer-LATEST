@@ -111,7 +111,7 @@
                                     </form>
                                 </td>
                                 <td>
-                                    <a href="org-edit-event.jsp?eventId=<%= ev.getEventId()%>">Edit Details</a> | 
+                                    <a href="org-edit-events.jsp?eventId=<%= ev.getEventId()%>">Edit Details</a> | 
                                     <a href="../DeleteEventServlet?eventId=<%= ev.getEventId()%>" 
                                        onclick="return confirm('Are you sure you want to permanently delete this event?');"
                                        style="color:red;">Delete</a>
