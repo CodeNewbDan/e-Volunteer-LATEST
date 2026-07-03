@@ -56,7 +56,7 @@
             <a href="v-profile.jsp">My Profile</a> | 
             <a href="v-browse-events.jsp">Browse Volunteer Calls</a> | 
             <a href="v-verify-attendance.jsp">Self-Verify My Attendance</a> | 
-            <a href="v-leaderboard.jsp">Leaderboard</a> | 
+            <a href="v-leaderboard.jsp">My Leaderboard</a> | 
             <a href="../LogoutServlet">Logout</a>
         </nav>
         <hr>

@@ -9,12 +9,14 @@
 <%!
     // Safe HTML Escaper to prevent XSS injection issues on dynamic DB renders
     public String escapeHtml(String input) {
-        if (input == null) return "";
+        if (input == null) {
+            return "";
+        }
         return input.replace("&", "&amp;")
-                    .replace("<", "&lt;")
-                    .replace(">", "&gt;")
-                    .replace("\"", "&quot;")
-                    .replace("'", "&#x27;");
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#x27;");
     }
 %>
 
@@ -42,7 +44,7 @@
             <a href="v-profile.jsp">My Profile</a> | 
             <a href="v-browse-events.jsp">Browse Volunteer Calls</a> | 
             <a href="v-verify-attendance.jsp">Self-Verify My Attendance</a> | 
-            <a href="v-leaderboard.jsp">Leaderboard</a> | 
+            <a href="v-leaderboard.jsp">My Leaderboard</a> | 
             <a href="../LogoutServlet">Logout</a>
         </nav>
         <hr>
@@ -143,26 +145,43 @@
                 </tr>
             </table>
         </form>
+
+        <br>
+        <hr style="border: 1px dashed red;">
+
+        <h3 style="color: red;">Account Deletion</h3>
+        <p>Permanently deleting your account removes all records, accumulated social hours, and pending event registrations. This action cannot be reversed.</p>
+
+        <form action="../DeleteVolunteerServlet" method="POST" onsubmit="return confirm('Are you absolutely sure you want to permanently delete your student profile? All accumulated hours will be lost!');">
+            <table border="0" style="background-color: #fff6f6; border: 1px solid red; padding: 10px;">
+                <tr>
+                    <td>To confirm deletion, please enter your password:</td>
+                    <td><input type="password" name="deletePassword" required placeholder="Verify profile password"></td>
+                    <td><input type="submit" value="Permanently Delete My Account" style="color: red; font-weight: bold;"></td>
+                </tr>
+            </table>
+        </form>
+
         <script>
-        // Client-side quick-validation checker
-        function validateProfileForm() {
-            const currentPass = document.getElementById("currentPassword").value.trim();
-            const newPass = document.getElementById("newPassword").value;
-            const confirmNewPass = document.getElementById("confirmNewPassword").value;
+            // Client-side quick-validation checker
+            function validateProfileForm() {
+                const currentPass = document.getElementById("currentPassword").value.trim();
+                const newPass = document.getElementById("newPassword").value;
+                const confirmNewPass = document.getElementById("confirmNewPassword").value;
 
-            if (currentPass === "") {
-                alert("Please enter your current password to authorize updates.");
-                return false;
-            }
-
-            if (newPass !== "" || confirmNewPass !== "") {
-                if (newPass !== confirmNewPass) {
-                    alert("Validation Error: New Password and Confirm New Password fields do not match!");
+                if (currentPass === "") {
+                    alert("Please enter your current password to authorize updates.");
                     return false;
                 }
+
+                if (newPass !== "" || confirmNewPass !== "") {
+                    if (newPass !== confirmNewPass) {
+                        alert("Validation Error: New Password and Confirm New Password fields do not match!");
+                        return false;
+                    }
+                }
+                return true;
             }
-            return true;
-        }
-    </script>
+        </script>
     </body>
 </html>

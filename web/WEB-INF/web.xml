@@ -52,6 +52,14 @@
         <servlet-name>UpdateEventStatusServlet</servlet-name>
         <servlet-class>servlet.UpdateEventStatusServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteVolunteerServlet</servlet-name>
+        <servlet-class>servlet.DeleteVolunteerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteOrgServlet</servlet-name>
+        <servlet-class>servlet.DeleteOrgServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterVolunteerServlet</servlet-name>
         <url-pattern>/RegisterVolunteerServlet</url-pattern>
@@ -103,5 +111,13 @@
     <servlet-mapping>
         <servlet-name>UpdateEventStatusServlet</servlet-name>
         <url-pattern>/UpdateEventStatusServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteVolunteerServlet</servlet-name>
+        <url-pattern>/DeleteVolunteerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteOrgServlet</servlet-name>
+        <url-pattern>/DeleteOrgServlet</url-pattern>
     </servlet-mapping>
 </web-app>

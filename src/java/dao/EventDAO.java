@@ -61,7 +61,7 @@ public class EventDAO {
     public event getEventById(int id) {
         String sql = "SELECT * FROM Event WHERE EventID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
+            autoUpdateEventStatuses(conn);
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -78,6 +78,7 @@ public class EventDAO {
         List<event> event = new ArrayList<>();
         String sql = "SELECT * FROM Event";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            autoUpdateEventStatuses(conn);
             while (rs.next()) {
                 event.add(mapEvent(rs));
             }
@@ -91,6 +92,9 @@ public class EventDAO {
         List<event> event = new ArrayList<>();
         String sql = "SELECT * FROM Event WHERE OrganizationId = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            // Clean up status first
+            autoUpdateEventStatuses(conn);
+            
             ps.setInt(1, orgId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -121,6 +125,18 @@ public class EventDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    
+    private void autoUpdateEventStatuses(Connection conn) {
+        String sql = "UPDATE Event SET EventStatus = 'Finished' "
+                + "WHERE EventDate < CURRENT_DATE AND EventStatus = 'Active'";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            // Log quietly to prevent console pollution while saving system safety
+            System.err.println("[E-Sukarelawan EventDAO Exception]: Status Auto-update failed.");
+            e.printStackTrace();
         }
     }
 
@@ -162,7 +178,7 @@ public class EventDAO {
                 + ") ORDER BY EventDate ASC";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
+            autoUpdateEventStatuses(conn);
             ps.setInt(1, volunteerId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {

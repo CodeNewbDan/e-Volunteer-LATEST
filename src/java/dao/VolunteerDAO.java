@@ -100,6 +100,24 @@ public class VolunteerDAO {
             return false;
         }
     }
+    
+    /**
+     * Permanently deletes a student's record from the Volunteer table. Cascade
+     * constraints in Apache Derby will automatically wipe associated
+     * registrations.
+     */
+    public boolean deleteVolunteer(int volunteerId) {
+        String sql = "DELETE FROM Volunteer WHERE VolunteerID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, volunteerId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("[E-Sukarelawan VolunteerDAO Exception]: Deletion failed for ID " + volunteerId);
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * Used to modify cached hours

@@ -142,6 +142,22 @@
                 </tr>
             </table>
         </form>
+                    
+        <br>
+        <hr style="border: 1px dashed red;">
+        <h3 style="color: red;">Organization Account Details</h3>
+        <p>Permanently deleting your organization will immediately terminate access and drop all hosted campaigns, upcoming event schedules, and active student registration history from our records. <b>This action cannot be undone.</b></p>
+
+        <form action="../DeleteOrgServlet" method="POST" onsubmit="return confirm('Are you completely sure you want to permanently delete your Organization? All events, schedules, and active rosters will be cascade wiped!');">
+            <table border="0" style="background-color: #fff6f6; border: 1px solid red; padding: 10px;">
+                <tr>
+                    <td>Verify Password to Confirm Permanent Deletion:</td>
+                    <td><input type="password" name="deletePassword" required placeholder="Verify profile password"></td>
+                    <td><input type="submit" value="Permanently Delete My Organization" style="color: red; font-weight: bold;"></td>
+                </tr>
+            </table>
+        </form>
+        
         <script>
             // Client-side quick-validation checker
             function validateOrgProfileForm() {

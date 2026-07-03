@@ -101,6 +101,19 @@ public class OrganizationDAO {
             return false;
         }
     }
+    
+    public boolean deleteOrganization(int orgId) {
+        String sql = "DELETE FROM Organization WHERE OrganizationID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, orgId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("[E-Sukarelawan OrganizationDAO Exception]: Deletion failed for ID " + orgId);
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     private organization mapOrganization(ResultSet rs) throws SQLException {
         organization org = new organization();
