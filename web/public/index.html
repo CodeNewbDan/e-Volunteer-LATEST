@@ -8,28 +8,169 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <title>E-Sukarelawan - Home</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
+        <style>
+            :root {
+                --color-bg: #F7F8FA;
+                --color-surface: #FFFFFF;
+                --color-text: #1A1A1A;
+                --color-text-muted: #6B7280;
+                --color-border: #E5E7EB;
+
+                --volunteer-primary: #00A99D;
+                --volunteer-primary-dark: #00877D;
+                --volunteer-light: #E5F7F5;
+
+                --org-primary: #4F46E5;
+                --org-primary-dark: #3730A3;
+                --org-light: #EEF0FF;
+
+                --radius-card: 16px;
+                --radius-button: 12px;
+                --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+                --max-width: 640px;
+            }
+
+            * {
+box-sizing: border-box;
+}
+
+            body {
+                margin: 0;
+                font-family: "Poppins", "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+                background: var(--color-bg);
+                color: var(--color-text);
+                line-height: 1.55;
+                padding: 32px 16px 64px;
+            }
+
+            .topbar {
+                max-width: var(--max-width);
+                margin: 0 auto 24px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .topbar .brand {
+                font-weight: 700;
+                font-size: 1.1rem;
+                color: var(--color-text);
+                text-decoration: none;
+            }
+
+            .page {
+max-width: var(--max-width);
+margin: 0 auto;
+}
+
+            .card {
+                background: var(--color-surface);
+                border-radius: var(--radius-card);
+                box-shadow: var(--shadow-card);
+                padding: 32px;
+            }
+
+            h1 {
+font-size: 1.5rem;
+font-weight: 700;
+margin: 0 0 8px;
+color: var(--color-text);
+}
+            h2 {
+font-size: 1.1rem;
+font-weight: 600;
+margin: 24px 0 8px;
+color: var(--color-text);
+}
+            p {
+color: var(--color-text-muted);
+margin: 0 0 16px;
+}
+            hr {
+border: none;
+border-top: 1px solid var(--color-border);
+margin: 20px 0;
+}
+
+            ul {
+list-style: none;
+padding: 0;
+margin: 0 0 8px;
+display: grid;
+gap: 10px;
+}
+
+            ul.list-volunteer li a {
+                display: block;
+                background: var(--volunteer-light);
+                border: 1px solid transparent;
+                border-radius: var(--radius-button);
+                padding: 14px 16px;
+                font-weight: 600;
+                color: var(--volunteer-primary-dark);
+                text-decoration: none;
+                transition: background 0.15s ease, border-color 0.15s ease;
+            }
+            ul.list-volunteer li a:hover {
+background: var(--color-surface);
+border-color: var(--volunteer-primary);
+}
+
+            ul.list-org li a {
+                display: block;
+                background: var(--org-light);
+                border: 1px solid transparent;
+                border-radius: var(--radius-button);
+                padding: 14px 16px;
+                font-weight: 600;
+                color: var(--org-primary-dark);
+                text-decoration: none;
+                transition: background 0.15s ease, border-color 0.15s ease;
+            }
+            ul.list-org li a:hover {
+background: var(--color-surface);
+border-color: var(--org-primary);
+}
+
+            .footer-note {
+text-align: center;
+margin-top: 24px;
+font-size: 0.8rem;
+color: var(--color-text-muted);
+}
+
+            @media (max-width: 480px) {
+                .card {
+padding: 24px 20px;
+}
+            }
+        </style>
     </head>
     <body>
-        <h1>E-Sukarelawan Portal</h1>
-        <p>Welcome to the University Social CSR & Volunteer Hours Verification System.</p>
+        <div class="topbar">
+            <span class="brand">E-Sukarelawan</span>
+        </div>
 
-        <hr>
+        <div class="page">
+            <div class="card">
+                <h1>E-Sukarelawan Portal</h1>
+                <p>Welcome to the University Social CSR &amp; Volunteer Hours Verification System.</p>
 
+                <hr>
 
-        <h2>Volunteer (Student) Portal</h2>
-        <ul>
-            <li><a href="v-login.html">Volunteer Login</a></li>
-            <li><a href="v-register.html">Volunteer Registration</a></li>
-        </ul>
+                <h2>Volunteer (Student) Portal</h2>
+                <ul class="list-volunteer">
+                    <li><a href="v-login.html">Volunteer Login</a></li>
+                    <li><a href="v-register.html">Volunteer Registration</a></li>
+                </ul>
 
-        <h2>Organization (Club / NGO) Portal</h2>
-        <ul>
-            <li><a href="org-login.html">Organization Login</a></li>
-            <li><a href="org-register.html">Organization Registration</a></li>
-        </ul>
-
-        <hr>
-        <p><small>E-Sukarelawan Platform &copy; 2026</small></p>
+                <h2>Organization (Club / NGO) Portal</h2>
+                <ul class="list-org">
+                    <li><a href="org-login.html">Organization Login</a></li>
+                    <li><a href="org-register.html">Organization Registration</a></li>
+                </ul>
+            </div>
+            <p class="footer-note">E-Sukarelawan Platform &copy; 2026</p>
+        </div>
     </body>
 </html>

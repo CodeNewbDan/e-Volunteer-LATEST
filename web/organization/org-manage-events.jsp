@@ -21,114 +21,683 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>My CSR Campaigns - E-Sukarelawan</title>
+        <title>Manage Campaigns - E-Sukarelawan</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+            :root {
+                --c-primary: #4F46E5;
+--c-primary-dark: #3730A3;
+--c-primary-light: #EEF0FF;
+                --c-gradient: linear-gradient(135deg, #4F46E5 0%, #7C6BF0 100%);
+                --c-bg: #F7F8FA;
+--c-surface: #FFFFFF;
+--c-text: #1A1A1A;
+                --c-muted: #6B7280;
+--c-border: #E5E7EB;
+                --c-success: #22C55E;
+--c-success-bg: #ECFDF5;
+                --c-danger: #EF4444;
+--c-danger-bg: #FEF2F2;
+                --c-warning: #F59E0B;
+--c-warning-bg: #FFFBEB;
+                --c-info: #3B82F6;
+--c-info-bg: #EFF6FF;
+                --radius: 16px;
+--radius-sm: 12px;
+--radius-xs: 8px;
+                --shadow: 0 4px 24px rgba(0,0,0,0.06);
+                --shadow-hover: 0 8px 32px rgba(0,0,0,0.10);
+            }
+            * {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+            body {
+font-family:"Poppins",system-ui,-apple-system,sans-serif;
+background:var(--c-bg);
+color:var(--c-text);
+line-height:1.6;
+}
+
+            /* ---- Top bar ---- */
+            .topbar {
+background:var(--c-gradient);
+padding:0 24px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+min-height:56px;
+position:sticky;
+top:0;
+z-index:100;
+box-shadow:0 2px 12px rgba(0,0,0,0.1);
+}
+            .topbar .brand {
+color:#fff;
+font-weight:700;
+font-size:1.05rem;
+text-decoration:none;
+display:flex;
+align-items:center;
+gap:8px;
+}
+            .topbar .brand svg {
+flex-shrink:0;
+}
+            .topbar .user-badge {
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(8px);
+color:#fff;
+font-size:0.82rem;
+font-weight:500;
+padding:6px 14px;
+border-radius:20px;
+border:1px solid rgba(255,255,255,0.2);
+}
+
+            /* ---- Nav ---- */
+            .nav-bar {
+background:var(--c-surface);
+border-bottom:1px solid var(--c-border);
+padding:0 24px;
+overflow-x:auto;
+white-space:nowrap;
+box-shadow:0 1px 4px rgba(0,0,0,0.03);
+}
+            .nav-bar a {
+display:inline-block;
+padding:14px 16px;
+font-size:0.85rem;
+font-weight:500;
+color:var(--c-muted);
+text-decoration:none;
+border-bottom:2px solid transparent;
+transition:color 0.15s, border-color 0.15s;
+}
+            .nav-bar a:hover {
+color:var(--c-primary);
+border-bottom-color:var(--c-primary);
+}
+            .nav-bar a.active {
+color:var(--c-primary-dark);
+border-bottom-color:var(--c-primary-dark);
+font-weight:600;
+}
+            .nav-bar a.nav-logout {
+color:var(--c-danger);
+}
+            .nav-bar a.nav-logout:hover {
+border-bottom-color:var(--c-danger);
+}
+
+            /* ---- Page shell ---- */
+            .page-wrap {
+max-width:1100px;
+margin:0 auto;
+padding:28px 24px 64px;
+}
+            .page-header {
+margin-bottom:24px;
+}
+            .page-header h1 {
+font-size:1.5rem;
+font-weight:700;
+margin-bottom:4px;
+}
+            .page-header p {
+color:var(--c-muted);
+font-size:0.9rem;
+}
+
+            /* ---- Cards ---- */
+            .card {
+background:var(--c-surface);
+border-radius:var(--radius);
+box-shadow:var(--shadow);
+padding:28px;
+margin-bottom:20px;
+border:1px solid var(--c-border);
+transition:box-shadow 0.2s;
+}
+            .card:hover {
+box-shadow:var(--shadow-hover);
+}
+            .card-title {
+font-size:1.05rem;
+font-weight:700;
+margin-bottom:4px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+            .card-title svg {
+color:var(--c-primary);
+flex-shrink:0;
+}
+            .card-subtitle {
+font-size:0.82rem;
+color:var(--c-muted);
+margin-bottom:16px;
+}
+
+            /* ---- Stat cards grid ---- */
+            .stats-grid {
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+gap:16px;
+margin-bottom:24px;
+}
+            .stat-card {
+background:var(--c-surface);
+border-radius:var(--radius);
+box-shadow:var(--shadow);
+padding:24px;
+border:1px solid var(--c-border);
+text-align:center;
+transition:transform 0.2s, box-shadow 0.2s;
+}
+            .stat-card:hover {
+transform:translateY(-3px);
+box-shadow:var(--shadow-hover);
+}
+            .stat-value {
+font-size:2rem;
+font-weight:800;
+color:var(--c-primary);
+line-height:1.2;
+}
+            .stat-label {
+font-size:0.8rem;
+font-weight:600;
+color:var(--c-muted);
+text-transform:uppercase;
+letter-spacing:0.5px;
+margin-top:4px;
+}
+
+            /* ---- Tables ---- */
+            .table-wrap {
+overflow-x:auto;
+border-radius:var(--radius-sm);
+border:1px solid var(--c-border);
+}
+            table {
+width:100%;
+border-collapse:collapse;
+font-size:0.88rem;
+}
+            table thead {
+background:var(--c-primary-light);
+}
+            table thead th {
+padding:12px 16px;
+text-align:left;
+font-weight:600;
+color:var(--c-primary-dark);
+font-size:0.8rem;
+text-transform:uppercase;
+letter-spacing:0.5px;
+white-space:nowrap;
+}
+            table tbody td {
+padding:12px 16px;
+border-top:1px solid var(--c-border);
+vertical-align:middle;
+}
+            table tbody tr {
+transition:background 0.1s;
+}
+            table tbody tr:hover {
+background:var(--c-primary-light);
+}
+            table tbody tr.highlight {
+background:#FFFDE7;
+}
+
+            /* ---- Badges ---- */
+            .badge {
+display:inline-flex;
+align-items:center;
+gap:4px;
+padding:4px 12px;
+border-radius:20px;
+font-size:0.78rem;
+font-weight:600;
+white-space:nowrap;
+}
+            .badge-success {
+background:var(--c-success-bg);
+color:#15803D;
+}
+            .badge-warning {
+background:var(--c-warning-bg);
+color:#92400E;
+}
+            .badge-danger  {
+background:var(--c-danger-bg);
+color:#991B1B;
+}
+            .badge-info    {
+background:var(--c-info-bg);
+color:#1E40AF;
+}
+            .badge-rank    {
+background:var(--c-gradient);
+color:#fff;
+font-weight:700;
+min-width:32px;
+justify-content:center;
+}
+
+            /* ---- Alerts ---- */
+            .alert {
+padding:14px 18px;
+border-radius:var(--radius-sm);
+font-size:0.88rem;
+margin-bottom:16px;
+display:flex;
+align-items:center;
+gap:10px;
+border:1px solid transparent;
+animation:slideDown 0.3s ease;
+}
+            .alert-success {
+background:var(--c-success-bg);
+border-color:var(--c-success);
+color:#15803D;
+}
+            .alert-error   {
+background:var(--c-danger-bg);
+border-color:var(--c-danger);
+color:#991B1B;
+}
+            .alert-info    {
+background:var(--c-info-bg);
+border-color:var(--c-info);
+color:#1E40AF;
+}
+            @keyframes slideDown {
+from {
+opacity:0;
+transform:translateY(-8px);
+}
+to {
+opacity:1;
+transform:translateY(0);
+}
+}
+
+            /* ---- Forms ---- */
+            .form-group {
+margin-bottom:20px;
+}
+            .form-group label {
+display:block;
+font-size:0.82rem;
+font-weight:600;
+color:var(--c-muted);
+margin-bottom:6px;
+text-transform:uppercase;
+letter-spacing:0.5px;
+}
+            .form-group .hint {
+font-size:0.78rem;
+color:var(--c-muted);
+margin-top:4px;
+}
+
+            form table {
+border:none !important;
+}
+            form table td {
+border:none !important;
+padding:0;
+}
+            form table tr {
+display:block;
+margin-bottom:18px;
+}
+            form table td {
+display:block;
+width:100%;
+}
+            form table td:first-child {
+margin-bottom:6px;
+}
+            form table td:first-child strong,
+            form table td label {
+display:block;
+font-size:0.82rem;
+font-weight:600;
+color:var(--c-muted);
+text-transform:uppercase;
+letter-spacing:0.5px;
+}
+
+            input[type="text"], input[type="email"], input[type="password"],
+            input[type="number"], input[type="date"], select, textarea {
+                width:100%;
+font-family:inherit;
+font-size:0.92rem;
+                padding:12px 16px;
+border:2px solid var(--c-border);
+                border-radius:var(--radius-sm);
+background:var(--c-surface);
+                color:var(--c-text);
+transition:border-color 0.2s, box-shadow 0.2s;
+            }
+            input:focus, select:focus, textarea:focus {
+                outline:none;
+border-color:var(--c-primary);
+                box-shadow:0 0 0 4px var(--c-primary-light);
+            }
+            input:disabled {
+background:var(--c-bg);
+color:var(--c-muted);
+cursor:not-allowed;
+opacity:0.7;
+}
+            textarea {
+resize:vertical;
+min-height:90px;
+}
+            select {
+                appearance:none;
+                background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+                background-repeat:no-repeat;
+background-position:right 14px center;
+padding-right:40px;
+            }
+            small {
+font-size:0.78rem;
+color:var(--c-muted);
+}
+
+            /* ---- Buttons ---- */
+            .btn {
+appearance:none;
+display:inline-flex;
+align-items:center;
+gap:6px;
+border:none;
+font-family:inherit;
+font-weight:600;
+font-size:0.9rem;
+padding:11px 22px;
+border-radius:var(--radius-sm);
+cursor:pointer;
+transition:transform 0.1s, box-shadow 0.2s;
+text-decoration:none;
+}
+            .btn-primary {
+background:var(--c-gradient);
+color:#fff;
+box-shadow:0 4px 14px rgba(79,70,229,0.3);
+}
+            .btn-primary:hover {
+transform:translateY(-1px);
+box-shadow:0 6px 20px rgba(79,70,229,0.4);
+}
+            .btn-primary:active {
+transform:translateY(0) scale(0.99);
+}
+
+            button[type="submit"] {
+appearance:none;
+border:none;
+background:var(--c-gradient);
+color:#fff;
+font-family:inherit;
+font-weight:600;
+font-size:0.92rem;
+padding:12px 24px;
+border-radius:var(--radius-sm);
+cursor:pointer;
+transition:transform 0.1s, box-shadow 0.2s;
+box-shadow:0 4px 14px rgba(79,70,229,0.3);
+}
+            button[type="submit"]:hover {
+transform:translateY(-1px);
+box-shadow:0 6px 20px rgba(79,70,229,0.4);
+}
+            button[type="submit"]:active {
+transform:translateY(0) scale(0.99);
+}
+            button[type="reset"], .btn-outline {
+appearance:none;
+background:transparent;
+color:var(--c-muted);
+border:2px solid var(--c-border);
+border-radius:var(--radius-sm);
+padding:10px 20px;
+font-family:inherit;
+font-weight:600;
+font-size:0.9rem;
+cursor:pointer;
+transition:border-color 0.15s, color 0.15s;
+}
+            button[type="reset"]:hover, .btn-outline:hover {
+border-color:var(--c-muted);
+color:var(--c-text);
+}
+            .btn-row {
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+            .btn-sm {
+padding:7px 14px;
+font-size:0.82rem;
+border-radius:var(--radius-xs);
+}
+            .btn-danger {
+background:var(--c-danger);
+color:#fff;
+border:none;
+}
+            .btn-danger:hover {
+background:#DC2626;
+}
+            input[type="submit"] {
+appearance:none;
+font-family:inherit;
+font-weight:600;
+font-size:0.88rem;
+padding:10px 20px;
+border-radius:var(--radius-sm);
+cursor:pointer;
+border:2px solid var(--c-border);
+background:var(--c-surface);
+color:var(--c-text);
+transition:all 0.15s;
+}
+            input[type="submit"]:hover {
+border-color:var(--c-primary);
+color:var(--c-primary);
+}
+
+            /* ---- Links ---- */
+            a {
+color:var(--c-primary);
+text-decoration:none;
+font-weight:500;
+}
+            a:hover {
+color:var(--c-primary-dark);
+text-decoration:underline;
+}
+
+            /* ---- Danger zone ---- */
+            .danger-zone {
+border:2px solid var(--c-danger);
+border-radius:var(--radius);
+padding:24px;
+margin-top:24px;
+background:var(--c-danger-bg);
+}
+            .danger-zone h3 {
+color:var(--c-danger);
+font-size:1rem;
+margin-bottom:8px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+            .danger-zone p {
+font-size:0.88rem;
+color:#991B1B;
+margin-bottom:16px;
+}
+            .danger-zone .del-row {
+display:flex;
+gap:10px;
+align-items:center;
+flex-wrap:wrap;
+}
+            .danger-zone input[type="password"] {
+max-width:280px;
+}
+            .danger-zone input[type="submit"] {
+color:var(--c-danger);
+border-color:var(--c-danger);
+font-weight:700;
+}
+            .danger-zone input[type="submit"]:hover {
+background:var(--c-danger);
+color:#fff;
+}
+
+            /* ---- Section sep ---- */
+            .section-sep {
+margin:28px 0;
+border:none;
+border-top:1px solid var(--c-border);
+}
+
+            /* ---- Footer ---- */
+            .footer {
+text-align:center;
+padding:16px;
+font-size:0.78rem;
+color:var(--c-muted);
+}
+
+            /* ---- Code ---- */
+            code {
+background:var(--c-bg);
+padding:3px 8px;
+border-radius:6px;
+font-size:0.85rem;
+font-family:"Fira Code",monospace;
+border:1px solid var(--c-border);
+}
+
+            /* ---- Responsive ---- */
+            @media (max-width:640px) {
+                .topbar {
+padding:0 16px;
+}
+                .nav-bar {
+padding:0 16px;
+}
+                .page-wrap {
+padding:20px 16px 48px;
+}
+                .card {
+padding:20px 16px;
+}
+                .stats-grid {
+grid-template-columns:1fr;
+}
+                .danger-zone .del-row {
+flex-direction:column;
+}
+            }
+        </style>
     </head>
     <body>
-        <h1>Manage CSR Activities & Event Listings</h1>
-    <p>Perform full database CRUD modifications on active campaigns. Generate, edit or delete social service calls.</p>
+        <div class="topbar">
+            <a class="brand" href="org-dashboard.jsp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> E-Sukarelawan</a>
+            <span class="user-badge">Organization Portal</span>
+        </div>
+        <div class="nav-bar">
+            <a href="org-dashboard.jsp">Dashboard</a>
+            <a href="org-profile.jsp">Profile</a>
+            <a href="org-manage-events.jsp" class="active">Campaigns</a>
+            <a href="org-create-event.jsp">Create Event</a>
+            <a href="org-view-attendance.jsp">Attendance</a>
+            <a href="../LogoutServlet" class="nav-logout">Logout</a>
+        </div>
+        <div class="page-wrap">
+            <div class="page-header">
+                <h1>Manage CSR Activities</h1>
+                <p>Full CRUD operations on your active campaigns.</p>
+            </div>
 
-    <!-- Navigation Menu -->
-    <nav>
-        <a href="org-dashboard.jsp">Dashboard Home</a> | 
-        <a href="org-profile.jsp">Manage Profile</a> | 
-        <a href="org-manage-events.jsp">My Campaigns (CRUD)</a> | 
-        <a href="org-create-event.jsp">Create New Event</a> | 
-        <a href="org-view-attendance.jsp">Track Registrations & Attendance</a> | 
-        <a href="../LogoutServlet">Logout</a>
-    </nav>
-    <hr>
-    
-    <% 
-        String status = request.getParameter("status");
-        if ("created".equals(status)) {
-            out.println("<p style='color:green;'><strong>New CSR volunteer call successfully added to database!</strong></p><hr>");
-        } else if ("updated".equals(status)) {
-            out.println("<p style='color:green;'><strong>Campaign information successfully modified and updated.</strong></p><hr>");
-        } else if ("deleted".equals(status)) {
-            out.println("<p style='color:blue;'><strong>Campaign record successfully removed from the system registry.</strong></p><hr>");
-        } else if ("error".equals(status)) {
-            out.println("<p style='color:red;'><strong>An database exception occurred processing this command. Check server logs.</strong></p><hr>");
-        }
-    %>
-    
-    <p><a href="org-create-event.jsp"><strong>[+] Post a New Volunteer Call</strong></a></p>
-    
-    <table border="1" cellpadding="8" width="100%">
-        <thead>
-            <tr>
-                <th>Event ID</th>
-                <th>Campaign Title</th>
-                <th>Target Date</th>
-                <th>Location Context</th>
-                <th>Total Credits</th>
-                <th>Vacancies</th>
-                <th>Secret verification Code</th>
-                <th>Operations</th>
-            </tr>
-        </thead>
-        <tbody>
             <%
-                try {
-                    EventDAO eventDAO = new EventDAO();
-                    List<event> list = eventDAO.getEventsByOrgId(currentOrg.getOrgId());
-                    
-                    if (list == null || list.isEmpty()) {
+                String status = request.getParameter("status");
+                if ("created".equals(status)) {
+                    out.println("<div class=\"alert alert-success\"><strong>&#10003; New campaign added!</strong></div>");
+                } else if ("updated".equals(status)) {
+                    out.println("<div class=\"alert alert-success\"><strong>&#10003; Campaign updated.</strong></div>");
+                } else if ("deleted".equals(status)) {
+                    out.println("<div class=\"alert alert-info\"><strong>&#8505; Campaign removed from registry.</strong></div>");
+                } else if ("error".equals(status)) {
+                    out.println("<div class=\"alert alert-error\"><strong>&#10007; Database error occurred.</strong></div>");
+                }
             %>
-                        <tr>
-                            <td colspan="8" align="center">No events found under your account. Click 'Post a New Volunteer Call' above to start.</td>
-                        </tr>
-            <%
-                    } else {
-                        for (event ev : list) {
-            %>
+
+            <div style="margin-bottom:16px;"><a href="org-create-event.jsp" class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Post New Volunteer Call</a></div>
+
+            <div class="card" style="padding:0;overflow:hidden;">
+                <div class="table-wrap" style="border:none;">
+                    <table><thead><tr><th>ID</th><th>Campaign</th><th>Date</th><th>Location</th><th>Credits</th><th>Vacancies</th><th>Code</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <%
+                                try {
+                                    EventDAO eventDAO = new EventDAO();
+                                    List<event> list = eventDAO.getEventsByOrgId(currentOrg.getOrgId());
+                                    if (list == null || list.isEmpty()) {
+                            %>
+                            <tr><td colspan="9" style="text-align:center;padding:24px;color:var(--c-muted);">No events found. Click above to create one.</td></tr>
+                            <% } else {
+                            for (event ev : list) {%>
                             <tr>
-                                <td><%= ev.getEventId() %></td>
-                                <td><strong><%= ev.getEventName() %></strong></td>
-                                <td><%= ev.getEventDate() %></td>
-                                <td><%= ev.getLocation() %></td>
-                                <td><%= ev.getEventHour() %> Hours</td>
-                                <td><%= ev.getNumOfVolunteer() %> volunteers</td>
-                                <td><code><%= ev.getSecretCode() %></code></td>
+                                <td><%= ev.getEventId()%></td>
+                                <td><strong><%= ev.getEventName()%></strong></td>
+                                <td><%= ev.getEventDate()%></td>
+                                <td><%= ev.getLocation()%></td>
+                                <td><%= ev.getEventHour()%> Hrs</td>
+                                <td><%= ev.getNumOfVolunteer()%></td>
+                                <td><code><%= ev.getSecretCode()%></code></td>
                                 <td>
-                                    <% if ("Active".equalsIgnoreCase(ev.getStatus())) { %>
-                                    <span style="color: green; font-weight: bold;">Active</span>
-                                    <% } else if ("Canceled".equalsIgnoreCase(ev.getStatus())) { %>
-                                    <span style="color: red; font-weight: bold;">Canceled</span>
-                                    <% } else { %>
-                                    <span style="color: blue; font-weight: bold;">Finished</span>
-                                    <% }%>
-                                </td>
-                                <td>
-                                    <!-- Status update dropdown triggers submission automatically -->
-                                    <form action="../UpdateEventStatusServlet" method="POST" style="margin: 0; display: inline;">
+                                    <% if ("Active".equalsIgnoreCase(ev.getStatus())) { %><span class="badge badge-success">Active</span>
+                                    <% } else if ("Canceled".equalsIgnoreCase(ev.getStatus())) { %><span class="badge badge-danger">Canceled</span>
+                                    <% } else { %><span class="badge badge-info">Finished</span><% }%>
+                                    <form action="../UpdateEventStatusServlet" method="POST" style="display:inline;margin-top:4px;">
                                         <input type="hidden" name="eventId" value="<%= ev.getEventId()%>">
-                                        <select name="eventStatus" onchange="this.form.submit()">
-                                            <option value="">-- Toggle Status --</option>
+                                        <select name="eventStatus" onchange="this.form.submit()" style="padding:4px 8px;font-size:0.78rem;width:auto;border-radius:6px;">
+                                            <option value="">Change...</option>
                                             <option value="Active" <%= "Active".equalsIgnoreCase(ev.getStatus()) ? "selected" : ""%>>Active</option>
                                             <option value="Finished" <%= "Finished".equalsIgnoreCase(ev.getStatus()) ? "selected" : ""%>>Finished</option>
                                             <option value="Canceled" <%= "Canceled".equalsIgnoreCase(ev.getStatus()) ? "selected" : ""%>>Canceled</option>
                                         </select>
                                     </form>
                                 </td>
-                                <td>
-                                    <a href="org-edit-events.jsp?eventId=<%= ev.getEventId()%>">Edit Details</a> | 
-                                    <a href="../DeleteEventServlet?eventId=<%= ev.getEventId()%>" 
-                                       onclick="return confirm('Are you sure you want to permanently delete this event?');"
-                                       style="color:red;">Delete</a>
+                                <td style="white-space:nowrap;">
+                                    <a href="org-edit-events.jsp?eventId=<%= ev.getEventId()%>" class="btn btn-outline btn-sm">Edit</a>
+                                    <a href="../DeleteEventServlet?eventId=<%= ev.getEventId()%>" onclick="return confirm('Delete this event permanently?');" class="btn btn-danger btn-sm" style="text-decoration:none;">Delete</a>
                                 </td>
                             </tr>
-            <%
-                        }
-                    }
-                } catch (Exception ex) {
-            %>
-                    <tr>
-                        <td colspan="8" style="color: red;">Failed to parse event listings: <%= ex.getMessage() %></td>
-                    </tr>
-            <%
-                }
-            %>
-        </tbody>
-    </table>
+                            <% }
+                            }
+                        } catch (Exception ex) {%>
+                            <tr><td colspan="9" style="color:var(--c-danger);">Error: <%= ex.getMessage()%></td></tr>
+                            <% }%>
+                        </tbody></table>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
