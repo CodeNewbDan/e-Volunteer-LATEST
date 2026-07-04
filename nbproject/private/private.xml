@@ -3,11 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/hansz/OneDrive/Documents/GitHub/e-Volunteer-LATEST/web/public/index.html</file>
-            <file>file:/C:/Users/hansz/OneDrive/Documents/GitHub/e-Volunteer-LATEST/web/public/v-login.html</file>
-            <file>file:/C:/Users/hansz/OneDrive/Documents/GitHub/e-Volunteer-LATEST/web/public/v-register.html</file>
-=======
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/public/v-login.html</file>
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/volunteer/v-dashboard.jsp</file>
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/volunteer/v-browse-events.jsp</file>
@@ -16,7 +11,7 @@
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/DeleteOrgServlet.java</file>
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/dao/OrganizationDAO.java</file>
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/organization/org-profile.jsp</file>
->>>>>>> f5769eb2bc095af054acd06c4f093cd51612360a
+            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/CreateEventServlet.java</file>
         </group>
     </open-files>
 </project-private>
