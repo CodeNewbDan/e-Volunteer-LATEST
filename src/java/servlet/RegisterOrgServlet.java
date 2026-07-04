@@ -77,7 +77,7 @@ public class RegisterOrgServlet extends HttpServlet {
         try {
             // 1. Extract and parse parameters matching organization.java datatypes
             String orgName = request.getParameter("orgName");
-            int registrationNum = Integer.parseInt(request.getParameter("registrationNum")); // int in your model
+            String registrationNum = request.getParameter("registrationNum"); // int in your model
             String orgEmail = request.getParameter("orgEmail");
             int contactPerson = Integer.parseInt(request.getParameter("contactPerson")); // int in your model
             String orgAddress = request.getParameter("orgAddress");

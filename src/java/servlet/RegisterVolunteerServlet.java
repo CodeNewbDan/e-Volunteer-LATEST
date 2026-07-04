@@ -76,7 +76,7 @@ public class RegisterVolunteerServlet extends HttpServlet {
 
         try {
             // 1. Retrieve and parse parameter types exactly as declared in volunteer.java (int for studentId and phoneNum)
-            int studentId = Integer.parseInt(request.getParameter("studentId"));
+            String studentId = request.getParameter("studentId");
             String fullName = request.getParameter("fullName");
             String email = request.getParameter("volunteerEmail");
             int phoneNum = Integer.parseInt(request.getParameter("phoneNum"));

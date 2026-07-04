@@ -39,7 +39,7 @@ public class VolunteerDAO {
         // Included all schema fields to support full registration details
         String sql = "INSERT INTO Volunteer (StudentID, FullName, Volunteer_Email, PhoneNumber, Address, Password, Course, TotalHours) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, v.getStudentId());
+            ps.setString(1, v.getStudentId());
             ps.setString(2, v.getFullName());
             ps.setString(3, v.getVolunteerEmail());
             ps.setInt(4, v.getPhoneNum());
@@ -86,7 +86,7 @@ public class VolunteerDAO {
     public boolean updateVolunteerProfile(volunteer v) {
         String sql = "UPDATE Volunteer SET StudentID = ?, FullName = ?, Volunteer_Email = ?, PhoneNumber = ?, Address = ?, Password = ?, Course = ? WHERE VolunteerID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, v.getStudentId());
+            ps.setString(1, v.getStudentId());
             ps.setString(2, v.getFullName());
             ps.setString(3, v.getVolunteerEmail());
             ps.setInt(4, v.getPhoneNum());
@@ -137,7 +137,7 @@ public class VolunteerDAO {
     private volunteer mapVolunteer(ResultSet rs) throws SQLException {
         volunteer v = new volunteer();
         v.setVolunteerId(rs.getInt("VolunteerID"));
-        v.setStudentId(rs.getInt("StudentID"));
+        v.setStudentId(rs.getString("StudentID"));
         v.setFullName(rs.getString("FullName"));
         v.setVolunteerEmail(rs.getString("Volunteer_Email"));
         v.setPhoneNum(rs.getInt("PhoneNumber"));
@@ -157,7 +157,7 @@ public class VolunteerDAO {
             while (rs.next()) {
                 volunteer v = new volunteer();
                 v.setVolunteerId(rs.getInt("VolunteerID"));
-                v.setStudentId(rs.getInt("StudentID"));
+                v.setStudentId(rs.getString("StudentID"));
                 v.setFullName(rs.getString("FullName"));
                 v.setVolunteerEmail(rs.getString("Volunteer_Email"));
 

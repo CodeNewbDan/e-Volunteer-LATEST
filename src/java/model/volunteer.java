@@ -10,7 +10,7 @@ package model;
  * 18/6/2026 
  */
 public class volunteer  {
-    private int studentId;
+    private String studentId;
     private String fullName;
     private String volunteerEmail;
     private int phoneNum;
@@ -24,7 +24,7 @@ public class volunteer  {
         
     }
 
-    public volunteer(int studentId, String fullName, String volunteerEmail, int phoneNum, String volunteerAddress, String volunteerPassword, String course, double totalHours) {
+    public volunteer(String studentId, String fullName, String volunteerEmail, int phoneNum, String volunteerAddress, String volunteerPassword, String course, double totalHours) {
         this.studentId = studentId;
         this.fullName = fullName;
         this.volunteerEmail = volunteerEmail;
@@ -35,11 +35,11 @@ public class volunteer  {
         this.totalHours = totalHours;
     }
 
-    public int getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 

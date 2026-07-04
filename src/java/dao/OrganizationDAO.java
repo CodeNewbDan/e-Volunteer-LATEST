@@ -42,7 +42,7 @@ public class OrganizationDAO {
         String sql = "INSERT INTO Organization (OrgName, RegistrationNumber, OrgEmail, ContactPerson, OrgAddress, OrgType, Password) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, org.getOrgName());
-            ps.setInt(2, org.getRegistrationNum());
+            ps.setString(2, org.getRegistrationNum());
             ps.setString(3, org.getOrgEmail());
             ps.setInt(4, org.getContactPerson());
             ps.setString(5, org.getOrgAddress());
@@ -88,7 +88,7 @@ public class OrganizationDAO {
         String sql = "UPDATE Organization SET OrgName = ?, RegistrationNumber = ?, OrgEmail = ?, ContactPerson = ?, OrgAddress = ?, OrgType = ?, Password = ? WHERE OrganizationID = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, org.getOrgName());
-            ps.setInt(2, org.getRegistrationNum());
+            ps.setString(2, org.getRegistrationNum());
             ps.setString(3, org.getOrgEmail());
             ps.setInt(4, org.getContactPerson());
             ps.setString(5, org.getOrgAddress());
@@ -119,7 +119,7 @@ public class OrganizationDAO {
         organization org = new organization();
         org.setOrgId(rs.getInt("OrganizationID"));
         org.setOrgName(rs.getString("OrgName"));
-        org.setRegistrationNum(rs.getInt("RegistrationNumber"));
+        org.setRegistrationNum(rs.getString("RegistrationNumber"));
         org.setOrgEmail(rs.getString("OrgEmail"));
         org.setContactPerson(rs.getInt("ContactPerson"));
         org.setOrgAddress(rs.getString("OrgAddress"));

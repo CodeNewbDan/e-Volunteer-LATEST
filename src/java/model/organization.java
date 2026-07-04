@@ -12,7 +12,7 @@ package model;
 public class organization {
     private int orgId;
     private String orgName;
-    private int registrationNum;
+    private String registrationNum;
     private String orgEmail;
     private int contactPerson;
     private String orgAddress;
@@ -23,7 +23,7 @@ public class organization {
         
     }
 
-    public organization(int orgId, String orgName, int registrationNum, String orgEmail, int contactPerson, String orgAddress, String orgType, String orgPassword) {
+    public organization(int orgId, String orgName, String registrationNum, String orgEmail, int contactPerson, String orgAddress, String orgType, String orgPassword) {
         this.orgId = orgId;
         this.orgName = orgName;
         this.registrationNum = registrationNum;
@@ -50,11 +50,11 @@ public class organization {
         this.orgName = orgName;
     }
 
-    public int getRegistrationNum() {
+    public String getRegistrationNum() {
         return registrationNum;
     }
 
-    public void setRegistrationNum(int registrationNum) {
+    public void setRegistrationNum(String registrationNum) {
         this.registrationNum = registrationNum;
     }
 
