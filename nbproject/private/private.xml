@@ -5,10 +5,12 @@
         <group>
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/public/v-login.html</file>
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/volunteer/v-dashboard.jsp</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/RegisterEventServlet.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/dao/EventDAO.java</file>
-            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/model/event.java</file>
             <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/volunteer/v-browse-events.jsp</file>
+            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/organization/org-view-attendance.jsp</file>
+            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/volunteer/v-leaderboard.jsp</file>
+            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/servlet/DeleteOrgServlet.java</file>
+            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/src/java/dao/OrganizationDAO.java</file>
+            <file>file:/C:/MY_UITM/DEGREE_IT/SEM_4/CSC584/Group%20Project/Main%20Project/eVolunteer/web/organization/org-profile.jsp</file>
         </group>
     </open-files>
 </project-private>
