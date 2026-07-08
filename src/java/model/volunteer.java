@@ -9,7 +9,9 @@ package model;
  * @author syahmi
  * 18/6/2026 
  */
-public class volunteer  {
+public class volunteer  implements java.io.Serializable{
+    
+    private static final long serialVersionUID = 1L;
     private String studentId;
     private String fullName;
     private String volunteerEmail;

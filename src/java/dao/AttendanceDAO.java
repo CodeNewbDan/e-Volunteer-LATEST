@@ -37,16 +37,75 @@ public class AttendanceDAO {
     }
 
     public boolean registerForEvent(int volunteerId, int eventId) {
-        // Using correct table 'Registration' and accurate column targets.
-        // RegistrationDate defaults to CURRENT_TIMESTAMP automatically via DB schema.
-        String sql = "INSERT INTO Registration (VolunteerID, EventID, AttendanceStatus) VALUES (?, ?, 'Pending')";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, volunteerId);
-            ps.setInt(2, eventId);
-            return ps.executeUpdate() > 0;
+        // Query 1: Prevent duplicate registrations
+        String checkRegSql = "SELECT COUNT(*) FROM Registration WHERE VolunteerID = ? AND EventID = ?";
+
+        // Query 2: Try to reduce the required volunteers by 1, but only if it's currently greater than 0
+        String decrementVacancySql = "UPDATE Event SET RequiredVolunteers = RequiredVolunteers - 1 WHERE EventID = ? AND RequiredVolunteers > 0";
+
+        // Query 3: Insert the pending registration
+        String insertRegistrationSql = "INSERT INTO Registration (VolunteerID, EventID, AttendanceStatus) VALUES (?, ?, 'Pending')";
+
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false); // 1. Start Derby Transaction block (locks queries together)
+
+            // Step 1: Check if this volunteer has already registered
+            try (PreparedStatement psCheck = conn.prepareStatement(checkRegSql)) {
+                psCheck.setInt(1, volunteerId);
+                psCheck.setInt(2, eventId);
+                try (ResultSet rs = psCheck.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) > 0) {
+                        conn.rollback(); // Rollback and cancel if already registered
+                        return false;
+                    }
+                }
+            }
+
+            // Step 2: Try to reserve a vacancy slot
+            try (PreparedStatement psVacancy = conn.prepareStatement(decrementVacancySql)) {
+                psVacancy.setInt(1, eventId);
+                int rowsUpdated = psVacancy.executeUpdate();
+
+                // If rowsUpdated is 0, it means RequiredVolunteers was already 0 (No spots left!)
+                if (rowsUpdated == 0) {
+                    conn.rollback(); // Cancel registration transaction safely
+                    return false;
+                }
+            }
+
+            // Step 3: Insert registration record
+            try (PreparedStatement psReg = conn.prepareStatement(insertRegistrationSql)) {
+                psReg.setInt(1, volunteerId);
+                psReg.setInt(2, eventId);
+                psReg.executeUpdate();
+            }
+
+            conn.commit(); // 2. Commit transaction (All 3 steps succeeded, save changes to database!)
+            return true;
+
         } catch (SQLException e) {
+            // Safe Rollback block: undo any partial database changes if an error occurs mid-way
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
             e.printStackTrace();
             return false;
+        } finally {
+            // Clean up connection states and close safely
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -57,7 +116,8 @@ public class AttendanceDAO {
         List<event> events = new ArrayList<>();
         String sql = "SELECT e.* FROM Event e "
                 + "JOIN Registration r ON e.EventID = r.EventID "
-                + "WHERE r.VolunteerID = ? AND r.AttendanceStatus = 'Pending' "
+                + "WHERE r.VolunteerID = ? AND r.AttendanceStatus = 'Pending' "  
+                + "AND e.EventStatus = 'Active'" 
                 + "ORDER BY e.EventDate ASC";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {

@@ -655,7 +655,7 @@ flex-direction:column;
                     out.println("<div class=\"alert alert-error\"><strong>&#10007; Event Not Found!</strong></div>");
                 } else if ("registered".equals(status)) {
                     out.println("<div class=\"alert alert-success\"><strong>&#10003; Successfully registered for the event!</strong></div>");
-                } else if ("registration_failed_or_already_registered".equals(status)) {
+                } else if ("registration_failed_or_already_registered".equals(error)) {
                     out.println("<div class=\"alert alert-error\"><strong>&#10007; Already registered or registration failed.</strong></div>");
                 } else if ("event_full".equals(error)) {
                     out.println("<div class=\"alert alert-error\"><strong>&#10007; Sorry, this event is already full!</strong></div>");

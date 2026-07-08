@@ -199,6 +199,7 @@
             <a href="org-manage-events.jsp">Campaigns</a>
             <a href="org-create-event.jsp">Create Event</a>
             <a href="org-view-attendance.jsp" class="active">Attendance</a>
+            <a href="org-history.jsp" >History</a>
             <a href="../LogoutServlet" class="nav-logout">Logout</a>
         </div>
         <div class="page-wrap">

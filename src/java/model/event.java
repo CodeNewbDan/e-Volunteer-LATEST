@@ -9,7 +9,9 @@ package model;
  * @author syahmi
  * 18/6/2026 
  */
-public class event {
+public class event implements java.io.Serializable{
+    // A unique version ID for serialization safety
+    private static final long serialVersionUID = 1L;
     private int eventId;
     private int orgId;
     private String eventName;

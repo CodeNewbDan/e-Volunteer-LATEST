@@ -8,8 +8,9 @@ package model;
  *
  * @author Asus
  */
-public class OrgLeaderboard {
+public class OrgLeaderboard implements java.io.Serializable {
 
+    private static final long serialVersionUID = 1L;
     private int orgId;
     private String orgName;
     private String orgType;

@@ -9,7 +9,9 @@ package model;
  * @author syahmi
  * 18/6/2026 
  */
-public class organization {
+public class organization implements java.io.Serializable{
+    
+    private static final long serialVersionUID = 1L;
     private int orgId;
     private String orgName;
     private String registrationNum;

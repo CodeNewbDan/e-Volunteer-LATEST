@@ -8,8 +8,9 @@ package model;
  *
  * @author syahmi 18/6/2026
  */
-public class registration {
-
+public class registration implements java.io.Serializable{
+    
+    private static final long serialVersionUID = 1L;
     private int registerId;
     private int id;
     private int volunteerId;

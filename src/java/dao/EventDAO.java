@@ -4,7 +4,6 @@ package dao;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author hansz
@@ -90,11 +89,11 @@ public class EventDAO {
 
     public List<event> getEventsByOrgId(int orgId) {
         List<event> event = new ArrayList<>();
-        String sql = "SELECT * FROM Event WHERE OrganizationId = ?";
+        String sql = "SELECT * FROM Event WHERE OrganizationId = ? AND EventStatus = 'Active' ORDER BY EventDate ASC";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             // Clean up status first
             autoUpdateEventStatuses(conn);
-            
+
             ps.setInt(1, orgId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -104,6 +103,39 @@ public class EventDAO {
             e.printStackTrace();
         }
         return event;
+    }
+
+    public List<event> getFinishedEventsByOrgId(int orgId) {
+        List<event> events = new ArrayList<>();
+        // Run date check self-healing logic
+
+        String sql = "SELECT * FROM Event WHERE OrganizationID = ? AND EventStatus = 'Finished' ORDER BY EventDate DESC";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            autoUpdateEventStatuses(conn);
+            ps.setInt(1, orgId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    event event = new event();
+                    event.setEventId(rs.getInt("EventID"));
+                    event.setOrgId(rs.getInt("OrganizationID"));
+                    event.setEventName(rs.getString("EventName"));
+                    event.setEventDate(rs.getString("EventDate"));
+                    event.setLocation(rs.getString("Location"));
+                    event.setStatus(rs.getString("EventStatus"));
+                    event.setNumOfVolunteer(rs.getInt("RequiredVolunteers"));
+                    event.setTaskDesc(rs.getString("TaskDescription"));
+                    event.setEventHour(rs.getDouble("EventVolunteerHour"));
+                    event.setSecretCode(rs.getString("SecretCode"));
+
+                    events.add(event);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return events;
     }
 
     public boolean updateEvent(event event) {
@@ -127,7 +159,7 @@ public class EventDAO {
             return false;
         }
     }
-    
+
     private void autoUpdateEventStatuses(Connection conn) {
         String sql = "UPDATE Event SET EventStatus = 'Finished' "
                 + "WHERE EventDate < CURRENT_DATE AND EventStatus = 'Active'";
@@ -170,7 +202,7 @@ public class EventDAO {
         ev.setSecretCode(rs.getString("SecretCode"));
         return ev;
     }
-    
+
     public List<event> getUnregisteredEventsForVolunteer(int volunteerId) {
         List<event> list = new ArrayList<>();
         String sql = "SELECT * FROM Event WHERE EventStatus = 'Active' AND EventID NOT IN ("

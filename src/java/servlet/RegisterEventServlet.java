@@ -109,7 +109,7 @@ public class RegisterEventServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/volunteer/v-browse-events.jsp?error=event_not_found");
                 return;
             }
-            
+            /*
             // Count total currently registered students for this event
             int currentRegisteredCount = dao.getAttendanceByEventId(eventId).size();
 
@@ -118,7 +118,7 @@ public class RegisterEventServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/volunteer/v-browse-events.jsp?error=event_full");
                 return;
             }
-            
+            */
             boolean success = dao.registerForEvent(volunteerId, eventId);
             
             if (success) {
